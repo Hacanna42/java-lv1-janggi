@@ -3,7 +3,7 @@ package object.moverule;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import object.Coordinate;
-import object.Route;
+import object.Path;
 import object.piece.Piece;
 import object.piece.Team;
 import org.assertj.core.api.Assertions;
@@ -23,12 +23,12 @@ class CannonRuleTest {
         Coordinate to = new Coordinate(toRow, toColumn);
 
         // when
-        Route route = cannonRule.getLegalRoute(from, to, Team.BLUE);
+        Path path = cannonRule.getLegalRoute(from, to, Team.BLUE);
 
         // then
         assertAll(
-                () -> Assertions.assertThat(route.getSize()).isEqualTo(3),
-                () -> Assertions.assertThat(route.getDestination()).isEqualTo(to)
+                () -> Assertions.assertThat(path.getSize()).isEqualTo(3),
+                () -> Assertions.assertThat(path.getDestination()).isEqualTo(to)
         );
     }
 
@@ -37,7 +37,7 @@ class CannonRuleTest {
     void cannonJumpTest() {
         // given
         CannonRule cannonRule = new CannonRule();
-        Route legalRoute = new Route(List.of(
+        Path legalPath = new Path(List.of(
                 new Coordinate(0, 1),
                 new Coordinate(0, 2),
                 new Coordinate(0, 3)
@@ -45,7 +45,7 @@ class CannonRuleTest {
         List<Piece> piecesOnBoard = List.of(new Piece(Team.RED, new SoldierRule(), new Coordinate(0, 2)));
 
         // when
-        boolean actual = cannonRule.isAbleToThrough(legalRoute, piecesOnBoard, Team.BLUE);
+        boolean actual = cannonRule.isAbleToThrough(legalPath, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isTrue();
@@ -56,7 +56,7 @@ class CannonRuleTest {
     void cannonCannotJumpTest() {
         // given
         CannonRule cannonRule = new CannonRule();
-        Route legalRoute = new Route(List.of(
+        Path legalPath = new Path(List.of(
                 new Coordinate(0, 1),
                 new Coordinate(0, 2),
                 new Coordinate(0, 3)
@@ -64,7 +64,7 @@ class CannonRuleTest {
         List<Piece> piecesOnBoard = List.of();
 
         // when
-        boolean actual = cannonRule.isAbleToThrough(legalRoute, piecesOnBoard, null);
+        boolean actual = cannonRule.isAbleToThrough(legalPath, piecesOnBoard, null);
 
         // then
         Assertions.assertThat(actual).isFalse();
@@ -75,7 +75,7 @@ class CannonRuleTest {
     void cannonDestinationOurTeamTest() {
         // given
         CannonRule cannonRule = new CannonRule();
-        Route legalRoute = new Route(List.of(
+        Path legalPath = new Path(List.of(
                 new Coordinate(0, 1),
                 new Coordinate(0, 2),
                 new Coordinate(0, 3)
@@ -85,7 +85,7 @@ class CannonRuleTest {
                 new Piece(Team.BLUE, new SoldierRule(), new Coordinate(0, 3)));
 
         // when
-        boolean actual = cannonRule.isAbleToThrough(legalRoute, piecesOnBoard, Team.BLUE);
+        boolean actual = cannonRule.isAbleToThrough(legalPath, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isFalse();
@@ -96,7 +96,7 @@ class CannonRuleTest {
     void cannonDestinationEnemyTeamWithoutCollisionTest() {
         // given
         CannonRule cannonRule = new CannonRule();
-        Route legalRoute = new Route(List.of(
+        Path legalPath = new Path(List.of(
                 new Coordinate(0, 1),
                 new Coordinate(0, 2),
                 new Coordinate(0, 3)
@@ -104,7 +104,7 @@ class CannonRuleTest {
         List<Piece> piecesOnBoard = List.of(new Piece(Team.RED, new SoldierRule(), new Coordinate(0, 3)));
 
         // when
-        boolean actual = cannonRule.isAbleToThrough(legalRoute, piecesOnBoard, Team.BLUE);
+        boolean actual = cannonRule.isAbleToThrough(legalPath, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isFalse();
@@ -115,7 +115,7 @@ class CannonRuleTest {
     void cannonCanMoveToEnemyTest() {
         // given
         CannonRule cannonRule = new CannonRule();
-        Route legalRoute = new Route(List.of(
+        Path legalPath = new Path(List.of(
                 new Coordinate(0, 1),
                 new Coordinate(0, 2),
                 new Coordinate(0, 3)
@@ -125,7 +125,7 @@ class CannonRuleTest {
         );
 
         // when
-        boolean actual = cannonRule.isAbleToThrough(legalRoute, piecesOnBoard, Team.BLUE);
+        boolean actual = cannonRule.isAbleToThrough(legalPath, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isTrue();
@@ -136,7 +136,7 @@ class CannonRuleTest {
     void cannonCannotMeetCannonTest() {
         // given
         CannonRule cannonRule = new CannonRule();
-        Route legalRoute = new Route(List.of(
+        Path legalPath = new Path(List.of(
                 new Coordinate(0, 1),
                 new Coordinate(0, 2),
                 new Coordinate(0, 3)
@@ -147,7 +147,7 @@ class CannonRuleTest {
         );
 
         // when
-        boolean actual = cannonRule.isAbleToThrough(legalRoute, piecesOnBoard, Team.BLUE);
+        boolean actual = cannonRule.isAbleToThrough(legalPath, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isFalse();
@@ -158,7 +158,7 @@ class CannonRuleTest {
     void cannonCannotMeetAfterCollisionCannonTest() {
         // given
         CannonRule cannonRule = new CannonRule();
-        Route legalRoute = new Route(List.of(
+        Path legalPath = new Path(List.of(
                 new Coordinate(0, 1),
                 new Coordinate(0, 2),
                 new Coordinate(0, 3)
@@ -169,7 +169,7 @@ class CannonRuleTest {
         );
 
         // when
-        boolean actual = cannonRule.isAbleToThrough(legalRoute, piecesOnBoard, Team.BLUE);
+        boolean actual = cannonRule.isAbleToThrough(legalPath, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isFalse();
@@ -180,7 +180,7 @@ class CannonRuleTest {
     void cannonCannotKillCannonTest() {
         // given
         CannonRule cannonRule = new CannonRule();
-        Route legalRoute = new Route(List.of(
+        Path legalPath = new Path(List.of(
                 new Coordinate(0, 1),
                 new Coordinate(0, 2),
                 new Coordinate(0, 3)
@@ -190,7 +190,7 @@ class CannonRuleTest {
         );
 
         // when
-        boolean actual = cannonRule.isAbleToThrough(legalRoute, piecesOnBoard, Team.BLUE);
+        boolean actual = cannonRule.isAbleToThrough(legalPath, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isFalse();

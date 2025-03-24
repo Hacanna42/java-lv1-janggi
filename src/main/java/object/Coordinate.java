@@ -45,9 +45,9 @@ public class Coordinate {
         return new Coordinate(newRow, newColumn);
     }
 
-    public Coordinate add(Route route) {
+    public Coordinate add(Path path) {
         Coordinate resultCoordinate = this;
-        List<Coordinate> coordinates = route.getCoordinate();
+        List<Coordinate> coordinates = path.getCoordinate();
         for (Coordinate coordinate : coordinates) {
             resultCoordinate = resultCoordinate.add(coordinate);
         }

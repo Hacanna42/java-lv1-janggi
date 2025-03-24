@@ -3,7 +3,7 @@ package object.piece;
 import java.util.List;
 import java.util.Objects;
 import object.Coordinate;
-import object.Route;
+import object.Path;
 import object.moverule.MoveRule;
 
 public class Piece {
@@ -18,12 +18,12 @@ public class Piece {
         this.coordinate = coordinate;
     }
 
-    public Piece move(Coordinate fromCoordinate, Coordinate toCoordinate, List<Piece> piecesOnBoard) {
-        moveRule.checkAbleToMove(fromCoordinate, toCoordinate, piecesOnBoard, team);
-        return new Piece(this.team, this.moveRule, toCoordinate);
+    public Piece move(Coordinate from, Coordinate to, List<Piece> piecesOnBoard) {
+        moveRule.checkAbleToMove(from, to, piecesOnBoard, team);
+        return new Piece(this.team, this.moveRule, to);
     }
 
-    public Route getLegalRoute(Coordinate destination) {
+    public Path getLegalRoute(Coordinate destination) {
         return moveRule.getLegalRoute(this.coordinate, destination, team);
     }
 

@@ -1,5 +1,4 @@
 import object.piece.GameBoard;
-import object.piece.Team;
 import object.view.GameView;
 
 public class KoreanChessApplication {
@@ -7,8 +6,8 @@ public class KoreanChessApplication {
         GameView gameView = new GameView();
         GameBoard gameBoard = GameBoard.generateToInitializeFormat();
 
-        gameView.startGame(gameBoard);
-
-
+        while (true) {
+            gameView.playTurn(gameBoard);
+        }
     }
 }

@@ -3,7 +3,7 @@ package object.moverule;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import object.Coordinate;
-import object.Route;
+import object.Path;
 import object.piece.Piece;
 import object.piece.Team;
 import org.assertj.core.api.Assertions;
@@ -23,11 +23,11 @@ class HorseRuleTest {
         Coordinate to = new Coordinate(toRow, toColumn);
 
         // when
-        Route route = horseRule.getLegalRoute(from, to, Team.BLUE);
+        Path path = horseRule.getLegalRoute(from, to, Team.BLUE);
 
         // then
         assertAll(
-                () -> Assertions.assertThat(route.getSize()).isEqualTo(2)
+                () -> Assertions.assertThat(path.getSize()).isEqualTo(2)
         );
     }
 
@@ -40,8 +40,8 @@ class HorseRuleTest {
         List<Piece> piecesOnBoard = List.of(fakeTeamPiece);
 
         // when
-        Route route = new Route(List.of(new Coordinate(6, 5), new Coordinate(7, 6)));
-        boolean actual = horseRule.isAbleToThrough(route, piecesOnBoard, Team.BLUE);
+        Path path = new Path(List.of(new Coordinate(6, 5), new Coordinate(7, 6)));
+        boolean actual = horseRule.isAbleToThrough(path, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isFalse();
@@ -56,8 +56,8 @@ class HorseRuleTest {
         List<Piece> piecesOnBoard = List.of(fakeTeamPiece);
 
         // when
-        Route route = new Route(List.of(new Coordinate(6, 5), new Coordinate(7, 6)));
-        boolean actual = horseRule.isAbleToThrough(route, piecesOnBoard, Team.BLUE);
+        Path path = new Path(List.of(new Coordinate(6, 5), new Coordinate(7, 6)));
+        boolean actual = horseRule.isAbleToThrough(path, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isTrue();
@@ -71,8 +71,8 @@ class HorseRuleTest {
         List<Piece> piecesOnBoard = List.of();
 
         // when
-        Route route = new Route(List.of(new Coordinate(6, 5), new Coordinate(7, 6)));
-        boolean actual = horseRule.isAbleToThrough(route, piecesOnBoard, Team.BLUE);
+        Path path = new Path(List.of(new Coordinate(6, 5), new Coordinate(7, 6)));
+        boolean actual = horseRule.isAbleToThrough(path, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isTrue();

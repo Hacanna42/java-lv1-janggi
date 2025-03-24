@@ -3,7 +3,7 @@ package object.moverule;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import object.Coordinate;
-import object.Route;
+import object.Path;
 import object.piece.Piece;
 import object.piece.Team;
 import org.assertj.core.api.Assertions;
@@ -23,12 +23,12 @@ class ChariotRuleTest {
         Coordinate to = new Coordinate(toRow, toColumn);
 
         // when
-        Route route = chariotRule.getLegalRoute(from, to, Team.BLUE);
+        Path path = chariotRule.getLegalRoute(from, to, Team.BLUE);
 
         // then
         assertAll(
-                () -> Assertions.assertThat(route.getSize()).isEqualTo(3),
-                () -> Assertions.assertThat(route.getDestination()).isEqualTo(to)
+                () -> Assertions.assertThat(path.getSize()).isEqualTo(3),
+                () -> Assertions.assertThat(path.getDestination()).isEqualTo(to)
         );
     }
 
@@ -37,7 +37,7 @@ class ChariotRuleTest {
     void chariotRouteCollisionTest() {
         // given
         ChariotRule chariotRule = new ChariotRule();
-        Route legalRoute = new Route(List.of(
+        Path legalPath = new Path(List.of(
                 new Coordinate(0, 1),
                 new Coordinate(0, 2),
                 new Coordinate(0, 3)
@@ -45,7 +45,7 @@ class ChariotRuleTest {
         List<Piece> piecesOnBoard = List.of(new Piece(null, null, new Coordinate(0, 2)));
 
         // when
-        boolean actual = chariotRule.isAbleToThrough(legalRoute, piecesOnBoard, null);
+        boolean actual = chariotRule.isAbleToThrough(legalPath, piecesOnBoard, null);
 
         // then
         Assertions.assertThat(actual).isFalse();
@@ -56,7 +56,7 @@ class ChariotRuleTest {
     void chariotDestinationOurTeamTest() {
         // given
         ChariotRule chariotRule = new ChariotRule();
-        Route legalRoute = new Route(List.of(
+        Path legalPath = new Path(List.of(
                 new Coordinate(0, 1),
                 new Coordinate(0, 2),
                 new Coordinate(0, 3)
@@ -64,7 +64,7 @@ class ChariotRuleTest {
         List<Piece> piecesOnBoard = List.of(new Piece(Team.BLUE, null, new Coordinate(0, 3)));
 
         // when
-        boolean actual = chariotRule.isAbleToThrough(legalRoute, piecesOnBoard, Team.BLUE);
+        boolean actual = chariotRule.isAbleToThrough(legalPath, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isFalse();
@@ -75,7 +75,7 @@ class ChariotRuleTest {
     void chariotDestinationEnemyTest() {
         // given
         ChariotRule chariotRule = new ChariotRule();
-        Route legalRoute = new Route(List.of(
+        Path legalPath = new Path(List.of(
                 new Coordinate(0, 1),
                 new Coordinate(0, 2),
                 new Coordinate(0, 3)
@@ -83,7 +83,7 @@ class ChariotRuleTest {
         List<Piece> piecesOnBoard = List.of(new Piece(Team.RED, null, new Coordinate(0, 3)));
 
         // when
-        boolean actual = chariotRule.isAbleToThrough(legalRoute, piecesOnBoard, Team.BLUE);
+        boolean actual = chariotRule.isAbleToThrough(legalPath, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isTrue();

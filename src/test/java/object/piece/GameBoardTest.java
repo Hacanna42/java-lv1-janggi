@@ -71,7 +71,7 @@ public class GameBoardTest {
         GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(piece1, piece2)));
 
         // when
-        gameBoard.killPieceFrom(piece1);
+        gameBoard.killPieceBy(piece1);
 
         // then
         assertThat(gameBoard.getPieces().size()).isEqualTo(1);
@@ -87,7 +87,7 @@ public class GameBoardTest {
         GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(piece1, piece2)));
 
         // when
-        gameBoard.killPieceFrom(piece1);
+        gameBoard.killPieceBy(piece1);
 
         // then
         assertThat(gameBoard.getPieces().size()).isEqualTo(2);
@@ -101,7 +101,7 @@ public class GameBoardTest {
         GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(piece1, piece2)));
 
         // when
-        gameBoard.killPieceFrom(piece1);
+        gameBoard.killPieceBy(piece1);
 
         // then
         assertThat(gameBoard.getPieces().size()).isEqualTo(2);
@@ -127,9 +127,7 @@ public class GameBoardTest {
     void gameBoardPieceMoveTest() {
         // given
         Piece originalPiece = new Piece(Team.BLUE, new SoldierRule(), new Coordinate(0, 0));
-        GameBoard gameBoard = new GameBoard(List.of(
-                originalPiece
-        ));
+        GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(originalPiece)));
 
         // when
         gameBoard.move(new Coordinate(0, 0), new Coordinate(0, 1));

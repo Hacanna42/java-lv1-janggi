@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import object.Coordinate;
-import object.Route;
+import object.Path;
 import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
@@ -12,7 +12,7 @@ import object.piece.Team;
 public class CannonRule implements MoveRule {
 
     @Override
-    public Route getLegalRoute(Coordinate startCoordinate, Coordinate endCoordinate, Team team) {
+    public Path getLegalRoute(Coordinate startCoordinate, Coordinate endCoordinate, Team team) {
         Coordinate maxCoordinate = Coordinate.getMaxCoordinate(startCoordinate, endCoordinate);
 
         if (startCoordinate.isSameColumn(endCoordinate)) {
@@ -33,9 +33,9 @@ public class CannonRule implements MoveRule {
     }
 
     @Override
-    public boolean isAbleToThrough(Route legalRoute, List<Piece> piecesOnBoard, Team team) {
+    public boolean isAbleToThrough(Path legalPath, List<Piece> piecesOnBoard, Team team) {
         // 규칙: 포는 목적지를 포함하지 않은 이동 경로에 무조건 포가 아닌 기물과 1회 충돌해야 함.
-        Optional<Piece> candidateCollisionPiece = findFirstPieceOnRoute(legalRoute, piecesOnBoard);
+        Optional<Piece> candidateCollisionPiece = findFirstPieceOnRoute(legalPath, piecesOnBoard);
 
         // 충돌할 Piece가 없으므로, 통과 불가능함.
         if (candidateCollisionPiece.isEmpty()) {
@@ -43,7 +43,7 @@ public class CannonRule implements MoveRule {
         }
 
         // 처음 충돌한 Piece가 목적지에 있으므로, 충돌로 간주하지 않음.
-        Coordinate destination = legalRoute.getDestination();
+        Coordinate destination = legalPath.getDestination();
         if (candidateCollisionPiece.get().isSameCoordinate(destination)) {
             return false;
         }
@@ -54,13 +54,13 @@ public class CannonRule implements MoveRule {
         }
 
         // 목적지에서 1회 충돌했다면 통과 불가능함.
-        if (piecesOnBoard.size() == 1 && candidateCollisionPiece.get().isSameCoordinate(legalRoute.getDestination())) {
+        if (piecesOnBoard.size() == 1 && candidateCollisionPiece.get().isSameCoordinate(legalPath.getDestination())) {
             return false;
         }
 
         // 2회 충돌했지만, 마지막 충돌이 목적지가 아닌 경우 통과 불가능함.
-        Piece lastCollisionPiece = findLastPieceOnRoute(legalRoute, piecesOnBoard);
-        if (piecesOnBoard.size() == 2 && !lastCollisionPiece.isSameCoordinate(legalRoute.getDestination())) {
+        Piece lastCollisionPiece = findLastPieceOnRoute(legalPath, piecesOnBoard);
+        if (piecesOnBoard.size() == 2 && !lastCollisionPiece.isSameCoordinate(legalPath.getDestination())) {
             return false;
         }
 
@@ -71,8 +71,8 @@ public class CannonRule implements MoveRule {
         return true;
     }
 
-    private Piece findLastPieceOnRoute(Route route, List<Piece> piecesOnBoard) {
-        List<Coordinate> reversedCoordinates = route.getCoordinate().reversed();
+    private Piece findLastPieceOnRoute(Path path, List<Piece> piecesOnBoard) {
+        List<Coordinate> reversedCoordinates = path.getCoordinate().reversed();
         for (Coordinate coordinate : reversedCoordinates) {
             Optional<Piece> foundPiece = piecesOnBoard.stream()
                     .filter(piece -> piece.isSameCoordinate(coordinate))
@@ -90,13 +90,13 @@ public class CannonRule implements MoveRule {
         return PieceType.CANNON;
     }
 
-    private Route generateStraightRoute(Coordinate minCoordinate, Coordinate maxCoordinate, Coordinate direction) {
+    private Path generateStraightRoute(Coordinate minCoordinate, Coordinate maxCoordinate, Coordinate direction) {
         List<Coordinate> footPrints = new ArrayList<>();
 
         while (!minCoordinate.equals(maxCoordinate)) {
             minCoordinate = minCoordinate.add(direction);
             footPrints.add(minCoordinate);
         }
-        return new Route(footPrints);
+        return new Path(footPrints);
     }
 }

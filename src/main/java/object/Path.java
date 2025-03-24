@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Route {
+public class Path {
 
     private final List<Coordinate> coordinates;
 
-    public Route(final List<Coordinate> coordinates) {
+    public Path(final List<Coordinate> coordinates) {
         this.coordinates = coordinates;
     }
 
-    public static Route makeAbsolute(Coordinate standardCoordinate, Route relativeRoute) {
+    public static Path makeAbsolute(Coordinate standardCoordinate, Path relativePath) {
         List<Coordinate> footPrints = new ArrayList<>();
         Coordinate currentCoordinate = standardCoordinate;
-        for (Coordinate coordinate : relativeRoute.getCoordinate()) {
+        for (Coordinate coordinate : relativePath.getCoordinate()) {
             currentCoordinate = currentCoordinate.add(coordinate);
             footPrints.add(currentCoordinate);
         }
 
-        return new Route(footPrints);
+        return new Path(footPrints);
     }
 
     public List<Coordinate> getCoordinate() {

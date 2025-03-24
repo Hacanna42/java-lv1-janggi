@@ -3,27 +3,27 @@ package object.moverule;
 import java.util.List;
 import java.util.Optional;
 import object.Coordinate;
-import object.Route;
+import object.Path;
 import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
 
 public class ElephantRule implements MoveRule {
-    private final List<Route> canMoveDirections = List.of(
-            new Route(List.of(new Coordinate(1, 0), new Coordinate(1, -1), new Coordinate(1, -1))),
-            new Route(List.of(new Coordinate(1, 0), new Coordinate(1, 1), new Coordinate(1, 1))),
-            new Route(List.of(new Coordinate(-1, 0), new Coordinate(-1, -1), new Coordinate(-1, -1))),
-            new Route(List.of(new Coordinate(-1, 0), new Coordinate(-1, 1), new Coordinate(-1, 1))),
-            new Route(List.of(new Coordinate(0, 1), new Coordinate(1, 1), new Coordinate(1, 1))),
-            new Route(List.of(new Coordinate(0, 1), new Coordinate(-1, 1), new Coordinate(-1, 1))),
-            new Route(List.of(new Coordinate(0, -1), new Coordinate(1, -1), new Coordinate(1, -1))),
-            new Route(List.of(new Coordinate(0, -1), new Coordinate(-1, -1), new Coordinate(-1, -1)))
+    private final List<Path> canMoveDirections = List.of(
+            new Path(List.of(new Coordinate(1, 0), new Coordinate(1, -1), new Coordinate(1, -1))),
+            new Path(List.of(new Coordinate(1, 0), new Coordinate(1, 1), new Coordinate(1, 1))),
+            new Path(List.of(new Coordinate(-1, 0), new Coordinate(-1, -1), new Coordinate(-1, -1))),
+            new Path(List.of(new Coordinate(-1, 0), new Coordinate(-1, 1), new Coordinate(-1, 1))),
+            new Path(List.of(new Coordinate(0, 1), new Coordinate(1, 1), new Coordinate(1, 1))),
+            new Path(List.of(new Coordinate(0, 1), new Coordinate(-1, 1), new Coordinate(-1, 1))),
+            new Path(List.of(new Coordinate(0, -1), new Coordinate(1, -1), new Coordinate(1, -1))),
+            new Path(List.of(new Coordinate(0, -1), new Coordinate(-1, -1), new Coordinate(-1, -1)))
     );
 
     @Override
-    public Route getLegalRoute(Coordinate fromCoordinate, Coordinate toCoordinate, Team team) {
-        for (Route canMoveDirection : canMoveDirections) {
-            if (fromCoordinate.add(canMoveDirection).equals(toCoordinate)) {
+    public Path getLegalRoute(Coordinate from, Coordinate to, Team team) {
+        for (Path canMoveDirection : canMoveDirections) {
+            if (from.add(canMoveDirection).equals(to)) {
                 return canMoveDirection;
             }
         }
@@ -32,8 +32,8 @@ public class ElephantRule implements MoveRule {
     }
 
     @Override
-    public boolean isAbleToThrough(Route legalRoute, List<Piece> piecesOnBoard, Team team) {
-        Coordinate destination = legalRoute.getDestination();
+    public boolean isAbleToThrough(Path legalPath, List<Piece> piecesOnBoard, Team team) {
+        Coordinate destination = legalPath.getDestination();
         Optional<Piece> pieceOnDestination = piecesOnBoard.stream()
                 .filter(piece -> piece.isSameCoordinate(destination))
                 .findFirst();

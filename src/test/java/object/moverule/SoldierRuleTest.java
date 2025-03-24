@@ -3,7 +3,7 @@ package object.moverule;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import object.Coordinate;
-import object.Route;
+import object.Path;
 import object.piece.Piece;
 import object.piece.Team;
 import org.assertj.core.api.Assertions;
@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 class SoldierRuleTest {
     @DisplayName("졸은 목적지로 이동 가능한 올바른 경로를 반환한다.")
     @ParameterizedTest
-    @CsvSource(value = {"1, 0", "0, -1", "0, 1"})
+    @CsvSource(value = {"-1, 0", "0, -1", "0, 1"})
     void soldierRouteTestForBlue(int toRow, int toColumn) {
         // given
         SoldierRule soldierRule = new SoldierRule();
@@ -23,18 +23,18 @@ class SoldierRuleTest {
         Coordinate to = new Coordinate(toRow, toColumn);
 
         // when
-        Route route = soldierRule.getLegalRoute(from, to, Team.BLUE);
+        Path path = soldierRule.getLegalRoute(from, to, Team.BLUE);
 
         // then
         assertAll(
-                () -> Assertions.assertThat(route.getSize()).isEqualTo(1),
-                () -> Assertions.assertThat(route.getDestination()).isEqualTo(to)
+                () -> Assertions.assertThat(path.getSize()).isEqualTo(1),
+                () -> Assertions.assertThat(path.getDestination()).isEqualTo(to)
         );
     }
 
     @DisplayName("졸은 홍팀일 때, 위로 이동이 불가능한 대신 아래로 이동할 수 있다.")
     @ParameterizedTest
-    @CsvSource(value = {"-1, 0", "0, -1", "0, 1"})
+    @CsvSource(value = {"1, 0", "0, -1", "0, 1"})
     void soldierStraightMoveTestForRed(int toRow, int toColumn) {
         // given
         SoldierRule soldierRule = new SoldierRule();
@@ -42,12 +42,12 @@ class SoldierRuleTest {
         Coordinate to = new Coordinate(toRow, toColumn);
 
         // when
-        Route route = soldierRule.getLegalRoute(from, to, Team.RED);
+        Path path = soldierRule.getLegalRoute(from, to, Team.RED);
 
         // then
         assertAll(
-                () -> Assertions.assertThat(route.getSize()).isEqualTo(1),
-                () -> Assertions.assertThat(route.getDestination()).isEqualTo(to)
+                () -> Assertions.assertThat(path.getSize()).isEqualTo(1),
+                () -> Assertions.assertThat(path.getDestination()).isEqualTo(to)
         );
     }
 
@@ -60,8 +60,8 @@ class SoldierRuleTest {
         List<Piece> piecesOnBoard = List.of(fakeTeamPiece);
 
         // when
-        Route route = new Route(List.of(new Coordinate(1, 0)));
-        boolean actual = soldierRule.isAbleToThrough(route, piecesOnBoard, Team.BLUE);
+        Path path = new Path(List.of(new Coordinate(1, 0)));
+        boolean actual = soldierRule.isAbleToThrough(path, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isFalse();
@@ -76,8 +76,8 @@ class SoldierRuleTest {
         List<Piece> piecesOnBoard = List.of(fakeTeamPiece);
 
         // when
-        Route route = new Route(List.of(new Coordinate(1, 0)));
-        boolean actual = soldierRule.isAbleToThrough(route, piecesOnBoard, Team.BLUE);
+        Path path = new Path(List.of(new Coordinate(1, 0)));
+        boolean actual = soldierRule.isAbleToThrough(path, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isTrue();
@@ -91,8 +91,8 @@ class SoldierRuleTest {
         List<Piece> piecesOnBoard = List.of();
 
         // when
-        Route route = new Route(List.of(new Coordinate(1, 0)));
-        boolean actual = soldierRule.isAbleToThrough(route, piecesOnBoard, Team.BLUE);
+        Path path = new Path(List.of(new Coordinate(1, 0)));
+        boolean actual = soldierRule.isAbleToThrough(path, piecesOnBoard, Team.BLUE);
 
         // then
         Assertions.assertThat(actual).isTrue();

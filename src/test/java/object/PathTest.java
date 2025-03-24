@@ -4,7 +4,7 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class RouteTest {
+class PathTest {
     @Test
     void 루트는_경로를_가진다() {
         // given
@@ -14,9 +14,9 @@ class RouteTest {
         );
 
         // when
-        Route route = new Route(coordinates);
+        Path path = new Path(coordinates);
 
         // then
-        Assertions.assertThatIterable(route.getCoordinate()).containsExactlyElementsOf(coordinates);
+        Assertions.assertThatIterable(path.getCoordinate()).containsExactlyElementsOf(coordinates);
     }
 }
