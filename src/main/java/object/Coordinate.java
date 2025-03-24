@@ -1,5 +1,6 @@
 package object;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Coordinate {
@@ -12,14 +13,25 @@ public class Coordinate {
         this.column = column;
     }
 
-    public static Coordinate getMinPosition(Coordinate coordinate, Coordinate otherCoordinate) {
+    public static Coordinate parseFrom(String rawTextCoordinate) {
+        String[] parsedText = rawTextCoordinate.split("\\s*,\\s*");
+        if (parsedText.length != 2) {
+            throw new IllegalArgumentException("올바른 좌표 입력이 아닙니다. (y, x) 형태로 입력해주세요.");
+        }
+        int row = Integer.parseInt(parsedText[0]);
+        int column = Integer.parseInt(parsedText[1]);
+
+        return new Coordinate(row, column);
+    }
+
+    public static Coordinate getMinCoordinate(Coordinate coordinate, Coordinate otherCoordinate) {
         if (coordinate.isAbsoluteBigger(otherCoordinate)) {
             return otherCoordinate;
         }
         return coordinate;
     }
 
-    public static Coordinate getMaxPosition(Coordinate coordinate, Coordinate otherCoordinate) {
+    public static Coordinate getMaxCoordinate(Coordinate coordinate, Coordinate otherCoordinate) {
         if (coordinate.isAbsoluteBigger(otherCoordinate)) {
             return coordinate;
         }
@@ -31,6 +43,16 @@ public class Coordinate {
         int newColumn = this.column + coordinate.column;
 
         return new Coordinate(newRow, newColumn);
+    }
+
+    public Coordinate add(Route route) {
+        Coordinate resultCoordinate = this;
+        List<Coordinate> coordinates = route.getCoordinate();
+        for (Coordinate coordinate : coordinates) {
+            resultCoordinate = resultCoordinate.add(coordinate);
+        }
+
+        return resultCoordinate;
     }
 
     public boolean isSameRow(Coordinate coordinate) {

@@ -1,12 +1,14 @@
-package object.strategy;
+package object.moverule;
 
+import java.util.List;
 import object.Coordinate;
 import object.Route;
+import object.piece.GameBoard;
+import object.piece.Piece;
 import object.piece.PieceType;
-import object.piece.Pieces;
 import object.piece.Team;
 
-public class GeneralStrategy implements MoveStrategy {
+public class GuardRule implements MoveRule {
 
     private static final String NOT_IMPLEMENTED_FEATURE = "아직 구현되지 않은 기능입니다.";
 
@@ -16,11 +18,11 @@ public class GeneralStrategy implements MoveStrategy {
     }
 
     @Override
-    public Coordinate move(Coordinate destination, Pieces onRoutePieces, Team moveTeam) {
-        throw new IllegalStateException(NOT_IMPLEMENTED_FEATURE);
+    public boolean isAbleToThrough(Route legalRoute, List<Piece> piecesOnBoard, Team team) {
+        return false;
     }
 
     public PieceType getPieceType() {
-        return PieceType.GENERAL;
+        return PieceType.GUARD;
     }
 }

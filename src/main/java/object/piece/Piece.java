@@ -1,29 +1,30 @@
 package object.piece;
 
+import java.util.List;
 import java.util.Objects;
 import object.Coordinate;
 import object.Route;
-import object.strategy.MoveStrategy;
+import object.moverule.MoveRule;
 
 public class Piece {
 
     private final Team team;
-    private final MoveStrategy moveStrategy;
-    private final Coordinate currentPosition;
+    private final MoveRule moveRule;
+    private final Coordinate coordinate;
 
-    public Piece(Team team, MoveStrategy moveStrategy, Coordinate currentPosition) {
+    public Piece(Team team, MoveRule moveRule, Coordinate coordinate) {
         this.team = team;
-        this.moveStrategy = moveStrategy;
-        this.currentPosition = currentPosition;
+        this.moveRule = moveRule;
+        this.coordinate = coordinate;
     }
 
-    public Piece move(Coordinate destination, Pieces onRoutePieces) {
-        Coordinate movedPosition = moveStrategy.move(destination, onRoutePieces, team);
-        return new Piece(this.team, this.moveStrategy, movedPosition);
+    public Piece move(Coordinate fromCoordinate, Coordinate toCoordinate, List<Piece> piecesOnBoard) {
+        moveRule.checkAbleToMove(fromCoordinate, toCoordinate, piecesOnBoard, team);
+        return new Piece(this.team, this.moveRule, toCoordinate);
     }
 
     public Route getLegalRoute(Coordinate destination) {
-        return moveStrategy.getLegalRoute(this.currentPosition, destination, team);
+        return moveRule.getLegalRoute(this.coordinate, destination, team);
     }
 
     public boolean isSameTeam(Team moveTeam) {
@@ -34,16 +35,16 @@ public class Piece {
         return isSameTeam(comparePiece.team);
     }
 
-    public boolean isSamePosition(Coordinate destination) {
-        return currentPosition.equals(destination);
+    public boolean isSameCoordinate(Coordinate destination) {
+        return coordinate.equals(destination);
     }
 
-    public boolean isSamePosition(Piece comparePiece) {
-        return isSamePosition(comparePiece.currentPosition);
+    public boolean isSameCoordinate(Piece comparePiece) {
+        return isSameCoordinate(comparePiece.coordinate);
     }
 
     public boolean isSameType(PieceType comparePieceType) {
-        return moveStrategy.getPieceType().equals(comparePieceType);
+        return moveRule.getPieceType().equals(comparePieceType);
     }
 
     public Team getTeam() {
@@ -51,7 +52,11 @@ public class Piece {
     }
 
     public PieceType getPieceType() {
-        return moveStrategy.getPieceType();
+        return moveRule.getPieceType();
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
     @Override
@@ -63,12 +68,12 @@ public class Piece {
             return false;
         }
         Piece piece = (Piece) o;
-        return getTeam() == piece.getTeam() && Objects.equals(moveStrategy, piece.moveStrategy)
-                && Objects.equals(currentPosition, piece.currentPosition);
+        return getTeam() == piece.getTeam() && Objects.equals(moveRule, piece.moveRule)
+                && Objects.equals(coordinate, piece.coordinate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTeam(), moveStrategy, currentPosition);
+        return Objects.hash(getTeam(), moveRule, coordinate);
     }
 }

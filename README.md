@@ -10,7 +10,7 @@
 
 # 첫 설계내용
 
-# pieces
+# gameBoard
 
 - piece들을 가진다
 - 피스들을 관리할 책임을 가진다

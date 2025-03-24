@@ -1,12 +1,13 @@
-package object.strategy;
+package object.moverule;
 
 import java.util.List;
 import object.Coordinate;
 import object.Route;
+import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
 
-public class ElephantStrategy implements MoveStrategy {
+public class ElephantRule implements MoveRule {
     private final List<Route> canMoveDirections = List.of(
             new Route(List.of(new Coordinate(1, 0), new Coordinate(1, -1), new Coordinate(1, -1))),
             new Route(List.of(new Coordinate(1, 0), new Coordinate(1, 1), new Coordinate(1, 1))),
@@ -20,7 +21,12 @@ public class ElephantStrategy implements MoveStrategy {
 
     @Override
     public Route getLegalRoute(Coordinate startCoordinate, Coordinate endCoordinate, Team team) {
-        return getLegalRoute(startCoordinate, endCoordinate, canMoveDirections);
+        return null;
+    }
+
+    @Override
+    public boolean isAbleToThrough(Route legalRoute, List<Piece> piecesOnBoard, Team team) {
+        return false;
     }
 
     public PieceType getPieceType() {

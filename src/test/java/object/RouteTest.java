@@ -17,6 +17,6 @@ class RouteTest {
         Route route = new Route(coordinates);
 
         // then
-        Assertions.assertThatIterable(route.getPositions()).containsExactlyElementsOf(coordinates);
+        Assertions.assertThatIterable(route.getCoordinate()).containsExactlyElementsOf(coordinates);
     }
 }

@@ -14,15 +14,19 @@ public enum PieceType {
 
     public static final String INVALID_TYPE = "존재하지 않는 타입입니다.";
 
-    private final String type;
+    private final String name;
 
-    PieceType(String type) {
-        this.type = type;
+    PieceType(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public static PieceType from(String s) {
         return Arrays.stream(PieceType.values())
-                .filter(pieceType -> s.equals(pieceType.type))
+                .filter(pieceType -> s.equals(pieceType.name))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(INVALID_TYPE));
     }
