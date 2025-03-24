@@ -43,7 +43,7 @@ public class SoldierRule implements MoveRule {
     public boolean isAbleToThrough(Route route, List<Piece> piecesOnBoard, Team team) {
         Optional<Piece> piece = findFirstPieceOnRoute(route, piecesOnBoard);
         if (piece.isPresent()) {
-            if (!piece.get().isSameCoordinate(route.getLast())) {
+            if (!piece.get().isSameCoordinate(route.getDestination())) {
                 return false;
             }
             if (piece.get().isSameTeam(team)) {

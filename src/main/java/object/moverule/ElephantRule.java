@@ -1,6 +1,7 @@
 package object.moverule;
 
 import java.util.List;
+import java.util.Optional;
 import object.Coordinate;
 import object.Route;
 import object.piece.Piece;
@@ -20,12 +21,30 @@ public class ElephantRule implements MoveRule {
     );
 
     @Override
-    public Route getLegalRoute(Coordinate startCoordinate, Coordinate endCoordinate, Team team) {
-        return null;
+    public Route getLegalRoute(Coordinate fromCoordinate, Coordinate toCoordinate, Team team) {
+        for (Route canMoveDirection : canMoveDirections) {
+            if (fromCoordinate.add(canMoveDirection).equals(toCoordinate)) {
+                return canMoveDirection;
+            }
+        }
+
+        throw new IllegalArgumentException(INVALID_POSITION);
     }
 
     @Override
     public boolean isAbleToThrough(Route legalRoute, List<Piece> piecesOnBoard, Team team) {
+        Coordinate destination = legalRoute.getDestination();
+        Optional<Piece> pieceOnDestination = piecesOnBoard.stream()
+                .filter(piece -> piece.isSameCoordinate(destination))
+                .findFirst();
+
+        if (pieceOnDestination.isEmpty()) {
+            return true;
+        }
+        if (!pieceOnDestination.get().isSameTeam(team)) {
+            return true;
+        }
+
         return false;
     }
 

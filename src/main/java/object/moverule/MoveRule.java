@@ -19,6 +19,10 @@ public interface MoveRule {
         }
     }
 
+    Route getLegalRoute(Coordinate startCoordinate, Coordinate endCoordinate, Team team);
+    boolean isAbleToThrough(Route legalRoute, List<Piece> piecesOnBoard, Team team);
+    PieceType getPieceType();
+
     default Optional<Piece> findFirstPieceOnRoute(Route route, List<Piece> piecesOnBoard) {
         for (Coordinate coordinate : route.getCoordinate()) {
             Optional<Piece> foundPiece = piecesOnBoard.stream()
@@ -32,8 +36,4 @@ public interface MoveRule {
 
         return Optional.empty();
     }
-
-    Route getLegalRoute(Coordinate startCoordinate, Coordinate endCoordinate, Team team);
-    boolean isAbleToThrough(Route legalRoute, List<Piece> piecesOnBoard, Team team);
-    PieceType getPieceType();
 }

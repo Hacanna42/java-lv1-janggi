@@ -75,8 +75,8 @@ public class Coordinate {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Coordinate coordinate = (Coordinate) o;
-        return row == coordinate.row && column == coordinate.column;
+        Coordinate that = (Coordinate) o;
+        return row == that.row && column == that.column;
     }
 
     @Override

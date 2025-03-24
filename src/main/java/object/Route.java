@@ -27,7 +27,7 @@ public class Route {
         return Collections.unmodifiableList(coordinates);
     }
 
-    public Coordinate getLast() {
+    public Coordinate getDestination() {
         return coordinates.getLast();
     }
 

@@ -16,7 +16,7 @@ class SoldierRuleTest {
     @DisplayName("졸은 목적지로 이동 가능한 올바른 경로를 반환한다.")
     @ParameterizedTest
     @CsvSource(value = {"1, 0", "0, -1", "0, 1"})
-    void soldierStraightMoveTestForBlue(int toRow, int toColumn) {
+    void soldierRouteTestForBlue(int toRow, int toColumn) {
         // given
         SoldierRule soldierRule = new SoldierRule();
         Coordinate from = new Coordinate(0, 0);
@@ -28,7 +28,7 @@ class SoldierRuleTest {
         // then
         assertAll(
                 () -> Assertions.assertThat(route.getSize()).isEqualTo(1),
-                () -> Assertions.assertThat(route.getLast()).isEqualTo(to)
+                () -> Assertions.assertThat(route.getDestination()).isEqualTo(to)
         );
     }
 
@@ -47,7 +47,7 @@ class SoldierRuleTest {
         // then
         assertAll(
                 () -> Assertions.assertThat(route.getSize()).isEqualTo(1),
-                () -> Assertions.assertThat(route.getLast()).isEqualTo(to)
+                () -> Assertions.assertThat(route.getDestination()).isEqualTo(to)
         );
     }
 

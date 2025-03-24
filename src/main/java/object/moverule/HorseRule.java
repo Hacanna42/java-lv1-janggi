@@ -17,7 +17,7 @@ public class HorseRule implements MoveRule {
             new Route(List.of(new Coordinate(-1, 0), new Coordinate(-1, 1))),
             new Route(List.of(new Coordinate(0, 1), new Coordinate(1, 1))),
             new Route(List.of(new Coordinate(0, 1), new Coordinate(-1, 1))),
-            new Route(List.of(new Coordinate(0, -1), new Coordinate(1, 1))),
+            new Route(List.of(new Coordinate(0, -1), new Coordinate(1, -1))),
             new Route(List.of(new Coordinate(0, -1), new Coordinate(-1, -1)))
     );
 
@@ -34,7 +34,7 @@ public class HorseRule implements MoveRule {
 
     @Override
     public boolean isAbleToThrough(Route legalRoute, List<Piece> piecesOnBoard, Team team) {
-        Coordinate destination = legalRoute.getLast();
+        Coordinate destination = legalRoute.getDestination();
         Optional<Piece> pieceOnDestination = piecesOnBoard.stream()
                 .filter(piece -> piece.isSameCoordinate(destination))
                 .findFirst();
