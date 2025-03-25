@@ -12,8 +12,6 @@ public enum PieceType {
     SOLIDER("졸"),
     ;
 
-    public static final String INVALID_TYPE = "존재하지 않는 타입입니다.";
-
     private final String name;
 
     PieceType(String name) {
@@ -24,10 +22,10 @@ public enum PieceType {
         return name;
     }
 
-    public static PieceType from(String s) {
+    public static PieceType from(String text) {
         return Arrays.stream(PieceType.values())
-                .filter(pieceType -> s.equals(pieceType.name))
+                .filter(pieceType -> text.equals(pieceType.name))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(INVALID_TYPE));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기물 타입입니다."));
     }
 }

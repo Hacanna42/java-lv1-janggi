@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import object.Coordinate;
 import object.moverule.CannonRule;
 import object.moverule.ChariotRule;
@@ -24,7 +23,7 @@ public class GameBoard {
         currentTurn = Team.BLUE;
     }
 
-    public static GameBoard generateToInitializeFormat() {
+    public static GameBoard generateToInitGameFormat() {
         List<Piece> initialPieces = new ArrayList<>(List.of(
                 // 졸·병 생성
                 new Piece(Team.RED, new SoldierRule(), new Coordinate(3, 0)),
@@ -82,14 +81,6 @@ public class GameBoard {
         return new GameBoard(initialPieces);
     }
 
-    public void killPieceBy(Piece killerPiece) {
-        Optional<Piece> willKilledPiece = pieces.stream()
-                .filter(piece -> piece.isSameCoordinate(killerPiece) && !piece.isSameTeam(killerPiece))
-                .findFirst();
-
-        willKilledPiece.ifPresent(pieces::remove);
-    }
-
     public void move(Coordinate from, Coordinate to) {
         Piece selectedPiece = getPieceFrom(from);
         if (!selectedPiece.isSameTeam(currentTurn)) {
@@ -103,24 +94,22 @@ public class GameBoard {
         swapTurn();
     }
 
-    public Team getCurrentTurn() {
-        return currentTurn;
+    public void killPieceBy(Piece killerPiece) {
+        Optional<Piece> willKilledPiece = pieces.stream()
+                .filter(piece -> piece.isSameCoordinate(killerPiece) && !piece.isSameTeam(killerPiece))
+                .findFirst();
+
+        willKilledPiece.ifPresent(pieces::remove);
     }
 
-    public int size() {
-        return pieces.size();
+    public boolean continuable() {
+        return 2 == pieces.stream()
+                .filter(piece -> piece.isSameType(PieceType.GENERAL))
+                .count();
     }
 
-    public List<Piece> getPieces() {
-        return Collections.unmodifiableList(pieces);
-    }
-
-    public Piece getFirstPiece() {
-        return pieces.getFirst();
-    }
-
-    public Piece getLastPiece() {
-        return pieces.getLast();
+    private void swapTurn() {
+        currentTurn = currentTurn == Team.BLUE ? Team.RED : Team.BLUE;
     }
 
     public Piece getPieceFrom(Coordinate coordinate) {
@@ -130,7 +119,28 @@ public class GameBoard {
                 .orElseThrow(() -> new IllegalArgumentException("해당 위치에 기물이 없습니다."));
     }
 
-    private void swapTurn() {
-        currentTurn = currentTurn == Team.BLUE ? Team.RED : Team.BLUE;
+    public Team getWinTeam() {
+        if (continuable()) {
+            throw new IllegalArgumentException("게임이 종료되지 않아서 승자를 결정할 수 없습니다.");
+        }
+
+        Piece generalPieceOfWinner = pieces.stream()
+                .filter(piece -> piece.isSameType(PieceType.GENERAL))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("남아있는 궁(장)을 찾을 수 없기 때문에 승자 결정에 실패했습니다."));
+
+        return generalPieceOfWinner.getTeam();
+    }
+
+    public Team getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public Piece getFirstPiece() {
+        return pieces.getFirst();
+    }
+
+    public List<Piece> getPieces() {
+        return Collections.unmodifiableList(pieces);
     }
 }

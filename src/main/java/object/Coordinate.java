@@ -24,18 +24,15 @@ public class Coordinate {
         return new Coordinate(row, column);
     }
 
-    public static Coordinate getMinCoordinate(Coordinate coordinate, Coordinate otherCoordinate) {
-        if (coordinate.isAbsoluteBigger(otherCoordinate)) {
-            return otherCoordinate;
-        }
-        return coordinate;
-    }
-
     public static Coordinate getMaxCoordinate(Coordinate coordinate, Coordinate otherCoordinate) {
         if (coordinate.isAbsoluteBigger(otherCoordinate)) {
             return coordinate;
         }
         return otherCoordinate;
+    }
+
+    private boolean isAbsoluteBigger(Coordinate coordinate) {
+        return (this.row + this.column) - (coordinate.row + coordinate.column) > 0;
     }
 
     public Coordinate add(Coordinate coordinate) {
@@ -61,10 +58,6 @@ public class Coordinate {
 
     public boolean isSameColumn(Coordinate coordinate) {
         return this.column == coordinate.column;
-    }
-
-    private boolean isAbsoluteBigger(Coordinate coordinate) {
-        return (this.row + this.column) - (coordinate.row + coordinate.column) > 0;
     }
 
     @Override

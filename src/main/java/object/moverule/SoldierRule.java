@@ -9,7 +9,7 @@ import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
 
-public class SoldierRule implements MoveRule {
+public class SoldierRule extends MoveRule {
 
     private static final Map<Team, List<Path>> teamCanMoveDirection;
 
@@ -32,7 +32,7 @@ public class SoldierRule implements MoveRule {
     public Path getLegalRoute(Coordinate from, Coordinate to, Team team) {
         for (Path canMovePath : teamCanMoveDirection.get(team)) {
             if (from.add(canMovePath).equals(to)) {
-                return Path.makeAbsolute(from, canMovePath);
+                return Path.makeAbsolutePath(from, canMovePath);
             }
         }
 
@@ -43,7 +43,7 @@ public class SoldierRule implements MoveRule {
     public boolean isAbleToThrough(Path path, List<Piece> piecesOnBoard, Team team) {
         Optional<Piece> piece = findFirstPieceOnRoute(path, piecesOnBoard);
         if (piece.isPresent()) {
-            if (!piece.get().isSameCoordinate(path.getDestination())) {
+            if (!piece.get().isSameCoordinate(path.getLast())) {
                 return false;
             }
             if (piece.get().isSameTeam(team)) {

@@ -2,7 +2,6 @@ package object.view;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Scanner;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -30,6 +29,11 @@ public class GameView {
         gameBoard.move(from, to);
     }
 
+    public void printWinTeam(GameBoard gameBoard) {
+        Team team = gameBoard.getWinTeam();
+        System.out.printf("%s이 이겼습니다. 게임을 종료합니다.", team.getName());
+    }
+
     private Coordinate askCoordinateOfArrivePlace() {
         System.out.println("이동할 위치를 다음과 같이 입력해주세요: y좌표, x좌표");
         String rawCoordinate = scanner.nextLine();
@@ -52,14 +56,10 @@ public class GameView {
         for (int row = 0; row < 10; row++) {
             System.out.printf("%-3d", row);
             for (int column = 0; column < 9; column++) {
-                Optional<Piece> piece = Optional.ofNullable(board.get(new Coordinate(row, column)));
-                if (piece.isPresent()) {
-                    if (piece.get().getTeam() == Team.RED) {
-                        System.out.print(red);
-                    } else {
-                        System.out.print(blue);
-                    }
-                    System.out.printf("%-3s", piece.get().getPieceType().getName());
+                Piece piece = board.get(new Coordinate(row, column));
+                if (piece != null) {
+                    printColorByTeam(piece);
+                    System.out.printf("%-3s", piece.getPieceType().getName());
                     System.out.print(exit);
                     continue;
                 }
@@ -75,6 +75,11 @@ public class GameView {
 
         System.out.println();
         System.out.println();
+    }
+
+    private void printColorByTeam(Piece piece) {
+        String color = piece.getTeam() == Team.RED ? red : blue;
+        System.out.print(color);
     }
 
     private String toFullWidth(int number) {

@@ -8,8 +8,8 @@ import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
 
-public class ElephantRule implements MoveRule {
-    private final List<Path> canMoveDirections = List.of(
+public class ElephantRule extends MoveRule {
+    private static final List<Path> canMoveDirections = List.of(
             new Path(List.of(new Coordinate(1, 0), new Coordinate(1, -1), new Coordinate(1, -1))),
             new Path(List.of(new Coordinate(1, 0), new Coordinate(1, 1), new Coordinate(1, 1))),
             new Path(List.of(new Coordinate(-1, 0), new Coordinate(-1, -1), new Coordinate(-1, -1))),
@@ -33,7 +33,7 @@ public class ElephantRule implements MoveRule {
 
     @Override
     public boolean isAbleToThrough(Path legalPath, List<Piece> piecesOnBoard, Team team) {
-        Coordinate destination = legalPath.getDestination();
+        Coordinate destination = legalPath.getLast();
         Optional<Piece> pieceOnDestination = piecesOnBoard.stream()
                 .filter(piece -> piece.isSameCoordinate(destination))
                 .findFirst();

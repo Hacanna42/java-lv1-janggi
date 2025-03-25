@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 import object.moverule.CannonRule;
 import object.moverule.ChariotRule;
+import object.moverule.GeneralRule;
 import object.moverule.SoldierRule;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +23,7 @@ public class GameBoardTest {
         // given
 
         // when
-        GameBoard gameBoard = GameBoard.generateToInitializeFormat();
+        GameBoard gameBoard = GameBoard.generateToInitGameFormat();
 
         // then
         List<Piece> extractedPieces = gameBoard.getPieces();
@@ -135,5 +136,83 @@ public class GameBoardTest {
         // then
         Piece movedPiece = gameBoard.getPieceFrom(new Coordinate(0, 1));
         Assertions.assertThat(movedPiece.getPieceType()).isEqualTo(PieceType.SOLIDER);
+    }
+
+    @DisplayName("GameBoard는 궁이 2개 일때, 게임이 진행 가능하다고 판단한다.")
+    @Test
+    void gameBoardContinuableTest() {
+        // given
+        GameBoard gameBoard = new GameBoard(List.of(
+                new Piece(Team.BLUE, new GeneralRule(), null),
+                new Piece(Team.RED, new GeneralRule(), null)
+        ));
+
+        // when
+        boolean expected = gameBoard.continuable();
+
+        // then
+        Assertions.assertThat(expected).isTrue();
+    }
+
+    @DisplayName("GameBoard는 궁이 2개가 아닐때, 게임이 진행 불가능하다고 판단한다.")
+    @Test
+    void gameBoardNotContinuableTest() {
+        // given
+        GameBoard gameBoard = new GameBoard(List.of(
+                new Piece(Team.BLUE, new GeneralRule(), null),
+                new Piece(Team.RED, new SoldierRule(), null)
+        ));
+
+        // when
+        boolean expected = gameBoard.continuable();
+
+        // then
+        Assertions.assertThat(expected).isFalse();
+    }
+
+    @DisplayName("GameBoard는 궁이 하나만 남았을 때, 남아있는 궁의 팀을 승자 팀으로 결정한다")
+    @Test
+    void gameBoardWinnerTest() {
+        // given
+        GameBoard gameBoard = new GameBoard(List.of(
+                new Piece(Team.BLUE, new GeneralRule(), null),
+                new Piece(Team.RED, new SoldierRule(), null)
+        ));
+
+        // when
+        Team actualWinnerTeam = gameBoard.getWinTeam();
+
+        // then
+        Team expectedWinnerTeam = Team.BLUE;
+        Assertions.assertThat(actualWinnerTeam).isEqualTo(expectedWinnerTeam);
+    }
+
+    @DisplayName("GameBoard는 현재 차례가 아닌 기물을 이동시킬 수 없다.")
+    @Test
+    void gameBoardCurrentTurnMoveTest() {
+        // given
+        GameBoard gameBoard = new GameBoard(List.of(
+                new Piece(Team.RED, new SoldierRule(), new Coordinate(0, 0))
+        ));
+
+        // when & then
+        Assertions.assertThat(gameBoard.getCurrentTurn()).as("이 테스트는 팀이 BLUE일 때 실행되어야 합니다.").isEqualTo(Team.BLUE);
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() -> gameBoard.move(new Coordinate(0, 0), null));
+    }
+
+    @DisplayName("GameBoard는 기물 이동 이후 차례를 변경한다.")
+    @Test
+    void gameBoardSwapTurnTest() {
+        // given
+        GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(
+                new Piece(Team.BLUE, new SoldierRule(), new Coordinate(0, 0))
+        )));
+
+        // when
+        Team beforeTeam = gameBoard.getCurrentTurn();
+        gameBoard.move(new Coordinate(0, 0), new Coordinate(0, 1));
+
+        // then
+        Assertions.assertThat(beforeTeam).isNotEqualTo(gameBoard.getCurrentTurn());
     }
 }

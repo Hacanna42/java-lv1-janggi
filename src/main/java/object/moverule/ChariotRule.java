@@ -9,7 +9,7 @@ import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
 
-public class ChariotRule implements MoveRule {
+public class ChariotRule extends MoveRule {
 
     @Override
     public Path getLegalRoute(Coordinate startCoordinate, Coordinate endCoordinate, Team team) {
@@ -39,7 +39,7 @@ public class ChariotRule implements MoveRule {
             return true;
         }
 
-        Coordinate destination = legalPath.getDestination();
+        Coordinate destination = legalPath.getLast();
         if (!collisionPiece.get().isSameCoordinate(destination)) {
             return false;
         }

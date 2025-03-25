@@ -7,19 +7,17 @@ public enum Team {
     BLUE("청"),
     ;
 
-    private static final String INVALID_TEAM = "팀은 홍 청이어야합니다.";
-
     Team(String name) {
         this.name = name;
     }
 
     private final String name;
 
-    public static Team from(String s) {
+    public static Team from(String text) {
         return Arrays.stream(Team.values())
-                .filter(team -> s.equals(team.name))
+                .filter(team -> text.equals(team.name))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(INVALID_TEAM));
+                .orElseThrow(() -> new IllegalArgumentException("팀은 홍 혹은 청이어야 합니다."));
     }
 
     public String getName() {

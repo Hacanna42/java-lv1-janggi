@@ -9,7 +9,7 @@ import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
 
-public class CannonRule implements MoveRule {
+public class CannonRule extends MoveRule {
 
     @Override
     public Path getLegalRoute(Coordinate startCoordinate, Coordinate endCoordinate, Team team) {
@@ -43,7 +43,7 @@ public class CannonRule implements MoveRule {
         }
 
         // 처음 충돌한 Piece가 목적지에 있으므로, 충돌로 간주하지 않음.
-        Coordinate destination = legalPath.getDestination();
+        Coordinate destination = legalPath.getLast();
         if (candidateCollisionPiece.get().isSameCoordinate(destination)) {
             return false;
         }
@@ -54,13 +54,13 @@ public class CannonRule implements MoveRule {
         }
 
         // 목적지에서 1회 충돌했다면 통과 불가능함.
-        if (piecesOnBoard.size() == 1 && candidateCollisionPiece.get().isSameCoordinate(legalPath.getDestination())) {
+        if (piecesOnBoard.size() == 1 && candidateCollisionPiece.get().isSameCoordinate(legalPath.getLast())) {
             return false;
         }
 
         // 2회 충돌했지만, 마지막 충돌이 목적지가 아닌 경우 통과 불가능함.
         Piece lastCollisionPiece = findLastPieceOnRoute(legalPath, piecesOnBoard);
-        if (piecesOnBoard.size() == 2 && !lastCollisionPiece.isSameCoordinate(legalPath.getDestination())) {
+        if (piecesOnBoard.size() == 2 && !lastCollisionPiece.isSameCoordinate(legalPath.getLast())) {
             return false;
         }
 

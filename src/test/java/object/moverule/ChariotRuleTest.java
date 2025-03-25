@@ -28,7 +28,7 @@ class ChariotRuleTest {
         // then
         assertAll(
                 () -> Assertions.assertThat(path.getSize()).isEqualTo(3),
-                () -> Assertions.assertThat(path.getDestination()).isEqualTo(to)
+                () -> Assertions.assertThat(path.getLast()).isEqualTo(to)
         );
     }
 

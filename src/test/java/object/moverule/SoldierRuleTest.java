@@ -28,7 +28,7 @@ class SoldierRuleTest {
         // then
         assertAll(
                 () -> Assertions.assertThat(path.getSize()).isEqualTo(1),
-                () -> Assertions.assertThat(path.getDestination()).isEqualTo(to)
+                () -> Assertions.assertThat(path.getLast()).isEqualTo(to)
         );
     }
 
@@ -47,7 +47,7 @@ class SoldierRuleTest {
         // then
         assertAll(
                 () -> Assertions.assertThat(path.getSize()).isEqualTo(1),
-                () -> Assertions.assertThat(path.getDestination()).isEqualTo(to)
+                () -> Assertions.assertThat(path.getLast()).isEqualTo(to)
         );
     }
 

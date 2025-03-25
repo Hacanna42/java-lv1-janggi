@@ -4,10 +4,16 @@ import object.view.GameView;
 public class KoreanChessApplication {
     public static void main(String[] args) {
         GameView gameView = new GameView();
-        GameBoard gameBoard = GameBoard.generateToInitializeFormat();
+        GameBoard gameBoard = GameBoard.generateToInitGameFormat();
 
-        while (true) {
-            gameView.playTurn(gameBoard);
-        }
+        do {
+            try {
+                gameView.playTurn(gameBoard);
+            } catch (IllegalArgumentException exception) {
+                System.out.println(exception.getMessage());
+            }
+        } while (gameBoard.continuable());
+
+        gameView.printWinTeam(gameBoard);
     }
 }

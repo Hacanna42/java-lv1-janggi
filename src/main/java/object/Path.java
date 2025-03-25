@@ -12,7 +12,7 @@ public class Path {
         this.coordinates = coordinates;
     }
 
-    public static Path makeAbsolute(Coordinate standardCoordinate, Path relativePath) {
+    public static Path makeAbsolutePath(Coordinate standardCoordinate, Path relativePath) {
         List<Coordinate> footPrints = new ArrayList<>();
         Coordinate currentCoordinate = standardCoordinate;
         for (Coordinate coordinate : relativePath.getCoordinate()) {
@@ -27,7 +27,7 @@ public class Path {
         return Collections.unmodifiableList(coordinates);
     }
 
-    public Coordinate getDestination() {
+    public Coordinate getLast() {
         return coordinates.getLast();
     }
 
