@@ -1,4 +1,4 @@
-package object.piece;
+package object.game;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +12,9 @@ import object.moverule.GeneralRule;
 import object.moverule.GuardRule;
 import object.moverule.HorseRule;
 import object.moverule.SoldierRule;
+import object.piece.Piece;
+import object.piece.PieceType;
+import object.piece.Team;
 
 public class GameBoard {
 

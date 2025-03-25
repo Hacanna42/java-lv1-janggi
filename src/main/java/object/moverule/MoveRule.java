@@ -14,7 +14,17 @@ public abstract class MoveRule {
 
     public abstract PieceType getPieceType();
 
-    public final Optional<Piece> findFirstPieceOnRoute(Path path, List<Piece> piecesOnBoard) {
+    public final void checkAbleToMove(Position from, Position to, List<Piece> piecesOnBoard, Team team) {
+        Path legalPath = getLegalRoute(from, to, team);
+        if (legalPath.getSize() == 0) {
+            throw new IllegalArgumentException("제자리로 이동할 수 없습니다.");
+        }
+        if (!isAbleToThrough(legalPath, piecesOnBoard, team)) {
+            throw new IllegalArgumentException(INVALID_POSITION);
+        }
+    }
+
+    protected final Optional<Piece> findFirstPieceOnRoute(Path path, List<Piece> piecesOnBoard) {
         for (Position position : path.getPositions()) {
             Optional<Piece> foundPiece = piecesOnBoard.stream()
                     .filter(piece -> piece.isSamePosition(position))
@@ -28,17 +38,7 @@ public abstract class MoveRule {
         return Optional.empty();
     }
 
-    public final void checkAbleToMove(Position from, Position to, List<Piece> piecesOnBoard, Team team) {
-        Path legalPath = getLegalRoute(from, to, team);
-        if (legalPath.getSize() == 0) {
-            throw new IllegalArgumentException("제자리로 이동할 수 없습니다.");
-        }
-        if (!isAbleToThrough(legalPath, piecesOnBoard, team)) {
-            throw new IllegalArgumentException(INVALID_POSITION);
-        }
-    }
-
-    public abstract Path getLegalRoute(Position startPosition, Position endPosition, Team team);
-    public abstract boolean isAbleToThrough(Path legalPath, List<Piece> piecesOnBoard, Team team);
+    protected abstract Path getLegalRoute(Position startPosition, Position endPosition, Team team);
+    protected abstract boolean isAbleToThrough(Path legalPath, List<Piece> piecesOnBoard, Team team);
 
 }

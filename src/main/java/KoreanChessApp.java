@@ -1,7 +1,7 @@
-import object.piece.GameBoard;
+import object.game.GameBoard;
 import object.view.GameView;
 
-public class KoreanChessApplication {
+public class KoreanChessApp {
     public static void main(String[] args) {
         GameView gameView = new GameView();
         GameBoard gameBoard = GameBoard.generateToInitGameFormat();

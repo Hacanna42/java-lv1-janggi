@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import object.coordinate.Position;
-import object.piece.GameBoard;
+import object.game.GameBoard;
 import object.piece.Piece;
 import object.piece.Team;
 
