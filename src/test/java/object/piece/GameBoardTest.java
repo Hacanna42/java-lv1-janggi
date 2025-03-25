@@ -39,7 +39,7 @@ public class GameBoardTest {
 
         assertAll(
                 // 피스가 올바른 수량으로 생성되었는지 테스트
-                () -> assertThat(pieceTypeCount.getOrDefault(PieceType.SOLIDER, 0)).isEqualTo(10),
+                () -> assertThat(pieceTypeCount.getOrDefault(PieceType.SOLDIER, 0)).isEqualTo(10),
                 () -> assertThat(pieceTypeCount.getOrDefault(PieceType.CANNON, 0)).isEqualTo(4),
                 () -> assertThat(pieceTypeCount.getOrDefault(PieceType.GENERAL, 0)).isEqualTo(2),
                 () -> assertThat(pieceTypeCount.getOrDefault(PieceType.CHARIOT, 0)).isEqualTo(4),
@@ -136,7 +136,7 @@ public class GameBoardTest {
 
         // then
         Piece movedPiece = gameBoard.getPieceFrom(new Position(0, 1));
-        Assertions.assertThat(movedPiece.getPieceType()).isEqualTo(PieceType.SOLIDER);
+        Assertions.assertThat(movedPiece.getPieceType()).isEqualTo(PieceType.SOLDIER);
     }
 
     @DisplayName("GameBoard는 궁이 2개 일때, 게임이 진행 가능하다고 판단한다.")

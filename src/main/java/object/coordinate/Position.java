@@ -37,7 +37,7 @@ public class Position {
         return new Position(row, column);
     }
 
-    public static Position getMaxCoordinate(Position position, Position otherPosition) {
+    public static Position getAbsoluteBigPositionBetween(Position position, Position otherPosition) {
         if (position.isAbsoluteBigger(otherPosition)) {
             return position;
         }

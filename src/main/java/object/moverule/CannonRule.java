@@ -14,7 +14,7 @@ public class CannonRule extends MoveRule {
 
     @Override
     public Path getLegalRoute(Position startPosition, Position endPosition, Team team) {
-        Position maxPosition = Position.getMaxCoordinate(startPosition, endPosition);
+        Position maxPosition = Position.getAbsoluteBigPositionBetween(startPosition, endPosition);
 
         if (startPosition.isSameColumn(endPosition)) {
             if (maxPosition.equals(startPosition)) {

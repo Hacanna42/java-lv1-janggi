@@ -62,6 +62,6 @@ public class SoldierRule extends MoveRule {
 
     @Override
     public PieceType getPieceType() {
-        return PieceType.SOLIDER;
+        return PieceType.SOLDIER;
     }
 }
