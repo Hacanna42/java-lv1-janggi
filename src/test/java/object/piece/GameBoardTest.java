@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import object.Coordinate;
+import object.coordinate.Position;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 import object.moverule.CannonRule;
@@ -54,8 +54,8 @@ public class GameBoardTest {
 
     void 피스들을_관리한다() {
         // given
-        var piece = new Piece(Team.BLUE, new ChariotRule(), new Coordinate(0, 1));
-        var piece2 = new Piece(Team.RED, new CannonRule(), new Coordinate(0, 2));
+        var piece = new Piece(Team.BLUE, new ChariotRule(), new Position(0, 1));
+        var piece2 = new Piece(Team.RED, new CannonRule(), new Position(0, 2));
 
         // when
         GameBoard gameBoard = new GameBoard(List.of(piece, piece2));
@@ -67,8 +67,8 @@ public class GameBoardTest {
     @Test
     void 같은_위치에_있는_적팀_기물을_잡을_수_있다() {
         // given
-        var piece1 = new Piece(Team.BLUE, new SoldierRule(), new Coordinate(0, 1));
-        var piece2 = new Piece(Team.RED, new SoldierRule(), new Coordinate(0, 1));
+        var piece1 = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 1));
+        var piece2 = new Piece(Team.RED, new SoldierRule(), new Position(0, 1));
         GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(piece1, piece2)));
 
         // when
@@ -82,8 +82,8 @@ public class GameBoardTest {
     @Test
     void 같은_위치에_있는_아군은_잡지_않는다() {
         // given
-        var piece1 = new Piece(Team.BLUE, new SoldierRule(), new Coordinate(0, 1));
-        var piece2 = new Piece(Team.BLUE, new SoldierRule(), new Coordinate(0, 1));
+        var piece1 = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 1));
+        var piece2 = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 1));
 
         GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(piece1, piece2)));
 
@@ -96,8 +96,8 @@ public class GameBoardTest {
 
     @Test
     void 다른_위치의_적군은_잡을_수_없다() {
-        var piece1 = new Piece(Team.BLUE, new SoldierRule(), new Coordinate(0, 2));
-        var piece2 = new Piece(Team.RED, new SoldierRule(), new Coordinate(0, 1));
+        var piece1 = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 2));
+        var piece2 = new Piece(Team.RED, new SoldierRule(), new Position(0, 1));
 
         GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(piece1, piece2)));
 
@@ -112,12 +112,12 @@ public class GameBoardTest {
     @Test
     void getPieceFromTest() {
         // given
-        Coordinate coordinate = new Coordinate(0, 0);
-        Piece fakePiece = new Piece(Team.BLUE, new SoldierRule(), coordinate);
+        Position position = new Position(0, 0);
+        Piece fakePiece = new Piece(Team.BLUE, new SoldierRule(), position);
         GameBoard gameBoard = new GameBoard(List.of(fakePiece));
 
         // when
-        Piece piece = gameBoard.getPieceFrom(coordinate);
+        Piece piece = gameBoard.getPieceFrom(position);
 
         // then
         Assertions.assertThat(piece).isEqualTo(fakePiece);
@@ -127,14 +127,14 @@ public class GameBoardTest {
     @Test
     void gameBoardPieceMoveTest() {
         // given
-        Piece originalPiece = new Piece(Team.BLUE, new SoldierRule(), new Coordinate(0, 0));
+        Piece originalPiece = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 0));
         GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(originalPiece)));
 
         // when
-        gameBoard.move(new Coordinate(0, 0), new Coordinate(0, 1));
+        gameBoard.move(new Position(0, 0), new Position(0, 1));
 
         // then
-        Piece movedPiece = gameBoard.getPieceFrom(new Coordinate(0, 1));
+        Piece movedPiece = gameBoard.getPieceFrom(new Position(0, 1));
         Assertions.assertThat(movedPiece.getPieceType()).isEqualTo(PieceType.SOLIDER);
     }
 
@@ -192,12 +192,12 @@ public class GameBoardTest {
     void gameBoardCurrentTurnMoveTest() {
         // given
         GameBoard gameBoard = new GameBoard(List.of(
-                new Piece(Team.RED, new SoldierRule(), new Coordinate(0, 0))
+                new Piece(Team.RED, new SoldierRule(), new Position(0, 0))
         ));
 
         // when & then
         Assertions.assertThat(gameBoard.getCurrentTurn()).as("이 테스트는 팀이 BLUE일 때 실행되어야 합니다.").isEqualTo(Team.BLUE);
-        Assertions.assertThatIllegalArgumentException().isThrownBy(() -> gameBoard.move(new Coordinate(0, 0), null));
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() -> gameBoard.move(new Position(0, 0), null));
     }
 
     @DisplayName("GameBoard는 기물 이동 이후 차례를 변경한다.")
@@ -205,12 +205,12 @@ public class GameBoardTest {
     void gameBoardSwapTurnTest() {
         // given
         GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(
-                new Piece(Team.BLUE, new SoldierRule(), new Coordinate(0, 0))
+                new Piece(Team.BLUE, new SoldierRule(), new Position(0, 0))
         )));
 
         // when
         Team beforeTeam = gameBoard.getCurrentTurn();
-        gameBoard.move(new Coordinate(0, 0), new Coordinate(0, 1));
+        gameBoard.move(new Position(0, 0), new Position(0, 1));
 
         // then
         Assertions.assertThat(beforeTeam).isNotEqualTo(gameBoard.getCurrentTurn());

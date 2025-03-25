@@ -2,8 +2,8 @@ package object.moverule;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
-import object.Coordinate;
-import object.Path;
+import object.coordinate.Position;
+import object.coordinate.Path;
 import object.piece.Piece;
 import object.piece.Team;
 import org.assertj.core.api.Assertions;
@@ -19,8 +19,8 @@ class CannonRuleTest {
     void cannonRouteTest(int toRow, int toColumn) {
         // given
         CannonRule cannonRule = new CannonRule();
-        Coordinate from = new Coordinate(5, 5);
-        Coordinate to = new Coordinate(toRow, toColumn);
+        Position from = new Position(5, 5);
+        Position to = new Position(toRow, toColumn);
 
         // when
         Path path = cannonRule.getLegalRoute(from, to, Team.BLUE);
@@ -38,11 +38,11 @@ class CannonRuleTest {
         // given
         CannonRule cannonRule = new CannonRule();
         Path legalPath = new Path(List.of(
-                new Coordinate(0, 1),
-                new Coordinate(0, 2),
-                new Coordinate(0, 3)
+                new Position(0, 1),
+                new Position(0, 2),
+                new Position(0, 3)
         ));
-        List<Piece> piecesOnBoard = List.of(new Piece(Team.RED, new SoldierRule(), new Coordinate(0, 2)));
+        List<Piece> piecesOnBoard = List.of(new Piece(Team.RED, new SoldierRule(), new Position(0, 2)));
 
         // when
         boolean actual = cannonRule.isAbleToThrough(legalPath, piecesOnBoard, Team.BLUE);
@@ -57,9 +57,9 @@ class CannonRuleTest {
         // given
         CannonRule cannonRule = new CannonRule();
         Path legalPath = new Path(List.of(
-                new Coordinate(0, 1),
-                new Coordinate(0, 2),
-                new Coordinate(0, 3)
+                new Position(0, 1),
+                new Position(0, 2),
+                new Position(0, 3)
         ));
         List<Piece> piecesOnBoard = List.of();
 
@@ -76,13 +76,13 @@ class CannonRuleTest {
         // given
         CannonRule cannonRule = new CannonRule();
         Path legalPath = new Path(List.of(
-                new Coordinate(0, 1),
-                new Coordinate(0, 2),
-                new Coordinate(0, 3)
+                new Position(0, 1),
+                new Position(0, 2),
+                new Position(0, 3)
         ));
         List<Piece> piecesOnBoard = List.of(
 
-                new Piece(Team.BLUE, new SoldierRule(), new Coordinate(0, 3)));
+                new Piece(Team.BLUE, new SoldierRule(), new Position(0, 3)));
 
         // when
         boolean actual = cannonRule.isAbleToThrough(legalPath, piecesOnBoard, Team.BLUE);
@@ -97,11 +97,11 @@ class CannonRuleTest {
         // given
         CannonRule cannonRule = new CannonRule();
         Path legalPath = new Path(List.of(
-                new Coordinate(0, 1),
-                new Coordinate(0, 2),
-                new Coordinate(0, 3)
+                new Position(0, 1),
+                new Position(0, 2),
+                new Position(0, 3)
         ));
-        List<Piece> piecesOnBoard = List.of(new Piece(Team.RED, new SoldierRule(), new Coordinate(0, 3)));
+        List<Piece> piecesOnBoard = List.of(new Piece(Team.RED, new SoldierRule(), new Position(0, 3)));
 
         // when
         boolean actual = cannonRule.isAbleToThrough(legalPath, piecesOnBoard, Team.BLUE);
@@ -116,12 +116,12 @@ class CannonRuleTest {
         // given
         CannonRule cannonRule = new CannonRule();
         Path legalPath = new Path(List.of(
-                new Coordinate(0, 1),
-                new Coordinate(0, 2),
-                new Coordinate(0, 3)
+                new Position(0, 1),
+                new Position(0, 2),
+                new Position(0, 3)
         ));
         List<Piece> piecesOnBoard = List.of(
-                new Piece(Team.RED, new SoldierRule(), new Coordinate(0, 2))
+                new Piece(Team.RED, new SoldierRule(), new Position(0, 2))
         );
 
         // when
@@ -137,13 +137,13 @@ class CannonRuleTest {
         // given
         CannonRule cannonRule = new CannonRule();
         Path legalPath = new Path(List.of(
-                new Coordinate(0, 1),
-                new Coordinate(0, 2),
-                new Coordinate(0, 3)
+                new Position(0, 1),
+                new Position(0, 2),
+                new Position(0, 3)
         ));
         List<Piece> piecesOnBoard = List.of(
-                new Piece(Team.RED, new CannonRule(), new Coordinate(0, 1)),
-                new Piece(Team.RED, new SoldierRule(), new Coordinate(0, 2))
+                new Piece(Team.RED, new CannonRule(), new Position(0, 1)),
+                new Piece(Team.RED, new SoldierRule(), new Position(0, 2))
         );
 
         // when
@@ -159,13 +159,13 @@ class CannonRuleTest {
         // given
         CannonRule cannonRule = new CannonRule();
         Path legalPath = new Path(List.of(
-                new Coordinate(0, 1),
-                new Coordinate(0, 2),
-                new Coordinate(0, 3)
+                new Position(0, 1),
+                new Position(0, 2),
+                new Position(0, 3)
         ));
         List<Piece> piecesOnBoard = List.of(
-                new Piece(Team.RED, new SoldierRule(), new Coordinate(0, 1)),
-                new Piece(Team.RED, new CannonRule(), new Coordinate(0, 2))
+                new Piece(Team.RED, new SoldierRule(), new Position(0, 1)),
+                new Piece(Team.RED, new CannonRule(), new Position(0, 2))
         );
 
         // when
@@ -181,12 +181,12 @@ class CannonRuleTest {
         // given
         CannonRule cannonRule = new CannonRule();
         Path legalPath = new Path(List.of(
-                new Coordinate(0, 1),
-                new Coordinate(0, 2),
-                new Coordinate(0, 3)
+                new Position(0, 1),
+                new Position(0, 2),
+                new Position(0, 3)
         ));
         List<Piece> piecesOnBoard = List.of(
-                new Piece(Team.RED, new CannonRule(), new Coordinate(0, 3))
+                new Piece(Team.RED, new CannonRule(), new Position(0, 3))
         );
 
         // when

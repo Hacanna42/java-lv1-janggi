@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import object.Coordinate;
+import object.coordinate.Position;
 import object.piece.GameBoard;
 import object.piece.Piece;
 import object.piece.Team;
@@ -24,8 +24,8 @@ public class GameView {
     public void playTurn(GameBoard gameBoard) {
         printBoard(gameBoard);
         printTurn(gameBoard);
-        Coordinate from = askCoordinateOfTargetPiece();
-        Coordinate to = askCoordinateOfArrivePlace();
+        Position from = askCoordinateOfTargetPiece();
+        Position to = askCoordinateOfArrivePlace();
         gameBoard.move(from, to);
     }
 
@@ -34,29 +34,29 @@ public class GameView {
         System.out.printf("%s이 이겼습니다. 게임을 종료합니다.", team.getName());
     }
 
-    private Coordinate askCoordinateOfArrivePlace() {
+    private Position askCoordinateOfArrivePlace() {
         System.out.println("이동할 위치를 다음과 같이 입력해주세요: y좌표, x좌표");
         String rawCoordinate = scanner.nextLine();
 
-        return Coordinate.parseFrom(rawCoordinate);
+        return Position.parseFrom(rawCoordinate);
     }
 
-    private Coordinate askCoordinateOfTargetPiece() {
+    private Position askCoordinateOfTargetPiece() {
         System.out.println("이동시키고 싶은 기물의 위치를 다음과 같이 입력해주세요: y좌표, x좌표");
         String rawCoordinate = scanner.nextLine();
 
-        return Coordinate.parseFrom(rawCoordinate);
+        return Position.parseFrom(rawCoordinate);
     }
 
     private void printBoard(GameBoard gameBoard) {
         List<Piece> pieces = gameBoard.getPieces();
-        Map<Coordinate, Piece> board = pieces.stream()
-                .collect(Collectors.toMap(Piece::getCoordinate, Function.identity()));
+        Map<Position, Piece> board = pieces.stream()
+                .collect(Collectors.toMap(Piece::getPosition, Function.identity()));
 
         for (int row = 0; row < 10; row++) {
             System.out.printf("%-3d", row);
             for (int column = 0; column < 9; column++) {
-                Piece piece = board.get(new Coordinate(row, column));
+                Piece piece = board.get(new Position(row, column));
                 if (piece != null) {
                     printColorByTeam(piece);
                     System.out.printf("%-3s", piece.getPieceType().getName());

@@ -3,36 +3,43 @@ package object.moverule;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import object.Coordinate;
-import object.Path;
+import object.coordinate.Position;
+import object.coordinate.Path;
+import object.coordinate.RelativePosition;
+import object.coordinate.RelativePath;
 import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
 
 public class SoldierRule extends MoveRule {
 
-    private static final Map<Team, List<Path>> teamCanMoveDirection;
+    private static final Map<Team, List<RelativePath>> pathsByTeam;
 
     static {
-        final List<Path> blueCanMoveDirections = List.of(
-                new Path(List.of(new Coordinate(0, 1))),
-                new Path(List.of(new Coordinate(0, -1))),
-                new Path(List.of(new Coordinate(-1, 0)))
+        final List<RelativePath> blueTeamPath = List.of(
+                new RelativePath(List.of(new RelativePosition(0, 1))),
+                new RelativePath(List.of(new RelativePosition(0, -1))),
+                new RelativePath(List.of(new RelativePosition(-1, 0)))
         );
-        final List<Path> redCanMoveDirections = List.of(
-                new Path(List.of(new Coordinate(0, 1))),
-                new Path(List.of(new Coordinate(0, -1))),
-                new Path(List.of(new Coordinate(1, 0)))
+        final List<RelativePath> redTeamPath = List.of(
+                new RelativePath(List.of(new RelativePosition(0, 1))),
+                new RelativePath(List.of(new RelativePosition(0, -1))),
+                new RelativePath(List.of(new RelativePosition(1, 0)))
         );
 
-        teamCanMoveDirection = Map.of(Team.BLUE, blueCanMoveDirections, Team.RED, redCanMoveDirections);
+        pathsByTeam = Map.of(Team.BLUE, blueTeamPath, Team.RED, redTeamPath);
     }
 
     @Override
-    public Path getLegalRoute(Coordinate from, Coordinate to, Team team) {
-        for (Path canMovePath : teamCanMoveDirection.get(team)) {
-            if (from.add(canMovePath).equals(to)) {
-                return Path.makeAbsolutePath(from, canMovePath);
+    public Path getLegalRoute(Position from, Position to, Team team) {
+        for (RelativePath relativePath : pathsByTeam.get(team)) {
+            try {
+                if (from.add(relativePath).equals(to)) {
+                    return relativePath.makeAbsolutePath(from);
+                }
+            } catch (IllegalStateException exception) {
+                // 범위 밖의 경로 가지치기
+                continue;
             }
         }
 
@@ -43,7 +50,7 @@ public class SoldierRule extends MoveRule {
     public boolean isAbleToThrough(Path path, List<Piece> piecesOnBoard, Team team) {
         Optional<Piece> piece = findFirstPieceOnRoute(path, piecesOnBoard);
         if (piece.isPresent()) {
-            if (!piece.get().isSameCoordinate(path.getLast())) {
+            if (!piece.get().isSamePosition(path.getLast())) {
                 return false;
             }
             if (piece.get().isSameTeam(team)) {

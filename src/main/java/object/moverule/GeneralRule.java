@@ -1,8 +1,8 @@
 package object.moverule;
 
 import java.util.List;
-import object.Coordinate;
-import object.Path;
+import object.coordinate.Position;
+import object.coordinate.Path;
 import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
@@ -13,7 +13,7 @@ public class GeneralRule extends MoveRule {
     private static final String NOT_IMPLEMENTED_FEATURE = "아직 구현되지 않은 기능입니다.";
 
     @Override
-    public Path getLegalRoute(Coordinate startCoordinate, Coordinate endCoordinate, Team team) {
+    public Path getLegalRoute(Position startPosition, Position endPosition, Team team) {
         throw new IllegalArgumentException(NOT_IMPLEMENTED_FEATURE);
     }
 

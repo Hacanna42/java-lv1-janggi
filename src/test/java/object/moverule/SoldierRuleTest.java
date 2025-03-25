@@ -2,8 +2,8 @@ package object.moverule;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
-import object.Coordinate;
-import object.Path;
+import object.coordinate.Position;
+import object.coordinate.Path;
 import object.piece.Piece;
 import object.piece.Team;
 import org.assertj.core.api.Assertions;
@@ -15,12 +15,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 class SoldierRuleTest {
     @DisplayName("졸은 목적지로 이동 가능한 올바른 경로를 반환한다.")
     @ParameterizedTest
-    @CsvSource(value = {"-1, 0", "0, -1", "0, 1"})
+    @CsvSource(value = {"4, 5", "5, 4", "5, 6"})
     void soldierRouteTestForBlue(int toRow, int toColumn) {
         // given
         SoldierRule soldierRule = new SoldierRule();
-        Coordinate from = new Coordinate(0, 0);
-        Coordinate to = new Coordinate(toRow, toColumn);
+        Position from = new Position(5, 5);
+        Position to = new Position(toRow, toColumn);
 
         // when
         Path path = soldierRule.getLegalRoute(from, to, Team.BLUE);
@@ -34,12 +34,12 @@ class SoldierRuleTest {
 
     @DisplayName("졸은 홍팀일 때, 위로 이동이 불가능한 대신 아래로 이동할 수 있다.")
     @ParameterizedTest
-    @CsvSource(value = {"1, 0", "0, -1", "0, 1"})
+    @CsvSource(value = {"6, 5", "5, 4", "5, 6"})
     void soldierStraightMoveTestForRed(int toRow, int toColumn) {
         // given
         SoldierRule soldierRule = new SoldierRule();
-        Coordinate from = new Coordinate(0, 0);
-        Coordinate to = new Coordinate(toRow, toColumn);
+        Position from = new Position(5, 5);
+        Position to = new Position(toRow, toColumn);
 
         // when
         Path path = soldierRule.getLegalRoute(from, to, Team.RED);
@@ -56,11 +56,11 @@ class SoldierRuleTest {
     void isAbleToThroughTest() {
         // given
         SoldierRule soldierRule = new SoldierRule();
-        Piece fakeTeamPiece = new Piece(Team.BLUE, new SoldierRule(), new Coordinate(1, 0));
+        Piece fakeTeamPiece = new Piece(Team.BLUE, new SoldierRule(), new Position(1, 0));
         List<Piece> piecesOnBoard = List.of(fakeTeamPiece);
 
         // when
-        Path path = new Path(List.of(new Coordinate(1, 0)));
+        Path path = new Path(List.of(new Position(1, 0)));
         boolean actual = soldierRule.isAbleToThrough(path, piecesOnBoard, Team.BLUE);
 
         // then
@@ -72,11 +72,11 @@ class SoldierRuleTest {
     void isAbleToThroughWhenEnemyTest() {
         // given
         SoldierRule soldierRule = new SoldierRule();
-        Piece fakeTeamPiece = new Piece(Team.RED, new SoldierRule(), new Coordinate(1, 0));
+        Piece fakeTeamPiece = new Piece(Team.RED, new SoldierRule(), new Position(1, 0));
         List<Piece> piecesOnBoard = List.of(fakeTeamPiece);
 
         // when
-        Path path = new Path(List.of(new Coordinate(1, 0)));
+        Path path = new Path(List.of(new Position(1, 0)));
         boolean actual = soldierRule.isAbleToThrough(path, piecesOnBoard, Team.BLUE);
 
         // then
@@ -91,7 +91,7 @@ class SoldierRuleTest {
         List<Piece> piecesOnBoard = List.of();
 
         // when
-        Path path = new Path(List.of(new Coordinate(1, 0)));
+        Path path = new Path(List.of(new Position(1, 0)));
         boolean actual = soldierRule.isAbleToThrough(path, piecesOnBoard, Team.BLUE);
 
         // then

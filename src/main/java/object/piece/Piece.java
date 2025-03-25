@@ -2,22 +2,22 @@ package object.piece;
 
 import java.util.List;
 import java.util.Objects;
-import object.Coordinate;
+import object.coordinate.Position;
 import object.moverule.MoveRule;
 
 public class Piece {
 
     private final Team team;
     private final MoveRule moveRule;
-    private final Coordinate coordinate;
+    private final Position position;
 
-    public Piece(Team team, MoveRule moveRule, Coordinate coordinate) {
+    public Piece(Team team, MoveRule moveRule, Position position) {
         this.team = team;
         this.moveRule = moveRule;
-        this.coordinate = coordinate;
+        this.position = position;
     }
 
-    public Piece move(Coordinate from, Coordinate to, List<Piece> piecesOnBoard) {
+    public Piece move(Position from, Position to, List<Piece> piecesOnBoard) {
         moveRule.checkAbleToMove(from, to, piecesOnBoard, team);
         return new Piece(this.team, this.moveRule, to);
     }
@@ -30,12 +30,12 @@ public class Piece {
         return isSameTeam(comparePiece.team);
     }
 
-    public boolean isSameCoordinate(Coordinate destination) {
-        return coordinate.equals(destination);
+    public boolean isSamePosition(Position position) {
+        return this.position.equals(position);
     }
 
-    public boolean isSameCoordinate(Piece comparePiece) {
-        return isSameCoordinate(comparePiece.coordinate);
+    public boolean isSamePosition(Piece comparePiece) {
+        return isSamePosition(comparePiece.position);
     }
 
     public boolean isSameType(PieceType comparePieceType) {
@@ -50,8 +50,8 @@ public class Piece {
         return moveRule.getPieceType();
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
+    public Position getPosition() {
+        return position;
     }
 
     @Override
@@ -64,11 +64,11 @@ public class Piece {
         }
         Piece piece = (Piece) o;
         return getTeam() == piece.getTeam() && Objects.equals(moveRule, piece.moveRule)
-                && Objects.equals(coordinate, piece.coordinate);
+                && Objects.equals(position, piece.position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTeam(), moveRule, coordinate);
+        return Objects.hash(getTeam(), moveRule, position);
     }
 }

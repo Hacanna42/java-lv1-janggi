@@ -3,8 +3,9 @@ package object.moverule;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import object.Coordinate;
-import object.Path;
+import object.coordinate.Position;
+import object.coordinate.Path;
+import object.coordinate.RelativePosition;
 import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
@@ -12,21 +13,21 @@ import object.piece.Team;
 public class ChariotRule extends MoveRule {
 
     @Override
-    public Path getLegalRoute(Coordinate startCoordinate, Coordinate endCoordinate, Team team) {
-        Coordinate maxCoordinate = Coordinate.getMaxCoordinate(startCoordinate, endCoordinate);
+    public Path getLegalRoute(Position startPosition, Position endPosition, Team team) {
+        Position maxPosition = Position.getMaxCoordinate(startPosition, endPosition);
 
-        if (startCoordinate.isSameColumn(endCoordinate)) {
-            if (maxCoordinate.equals(startCoordinate)) {
-                return generateStraightRoute(startCoordinate, endCoordinate, new Coordinate(-1, 0));
+        if (startPosition.isSameColumn(endPosition)) {
+            if (maxPosition.equals(startPosition)) {
+                return generateStraightRoute(startPosition, endPosition, new RelativePosition(-1, 0));
             }
-            return generateStraightRoute(startCoordinate, endCoordinate, new Coordinate(1, 0));
+            return generateStraightRoute(startPosition, endPosition, new RelativePosition(1, 0));
         }
 
-        if (startCoordinate.isSameRow(endCoordinate)) {
-            if (maxCoordinate.equals(startCoordinate)) {
-                return generateStraightRoute(startCoordinate, endCoordinate, new Coordinate(0, -1));
+        if (startPosition.isSameRow(endPosition)) {
+            if (maxPosition.equals(startPosition)) {
+                return generateStraightRoute(startPosition, endPosition, new RelativePosition(0, -1));
             }
-            return generateStraightRoute(startCoordinate, endCoordinate, new Coordinate(0, 1));
+            return generateStraightRoute(startPosition, endPosition, new RelativePosition(0, 1));
         }
 
         throw new IllegalArgumentException(MoveRule.INVALID_POSITION);
@@ -39,8 +40,8 @@ public class ChariotRule extends MoveRule {
             return true;
         }
 
-        Coordinate destination = legalPath.getLast();
-        if (!collisionPiece.get().isSameCoordinate(destination)) {
+        Position destination = legalPath.getLast();
+        if (!collisionPiece.get().isSamePosition(destination)) {
             return false;
         }
 
@@ -51,12 +52,12 @@ public class ChariotRule extends MoveRule {
         return true;
     }
 
-    private Path generateStraightRoute(Coordinate minCoordinate, Coordinate maxCoordinate, Coordinate direction) {
-        List<Coordinate> footPrints = new ArrayList<>();
+    private Path generateStraightRoute(Position minPosition, Position maxPosition, RelativePosition direction) {
+        List<Position> footPrints = new ArrayList<>();
 
-        while (!minCoordinate.equals(maxCoordinate)) {
-            minCoordinate = minCoordinate.add(direction);
-            footPrints.add(minCoordinate);
+        while (!minPosition.equals(maxPosition)) {
+            minPosition = minPosition.add(direction);
+            footPrints.add(minPosition);
         }
         return new Path(footPrints);
     }
