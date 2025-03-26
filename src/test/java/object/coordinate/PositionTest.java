@@ -7,8 +7,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class PositionTest {
+    @DisplayName("Position은 문자열을 자기 자신으로 파싱할 수 있다.")
     @Test
-    void 위치_정적_팩토리_메서드_파싱_테스트() {
+    void PositionParsingTest() {
         // given
         String rawText = "0, 1";
 
@@ -16,17 +17,19 @@ class PositionTest {
         Assertions.assertThatNoException().isThrownBy(() -> Position.parseFrom(rawText));
     }
 
+    @DisplayName("위치는 열과 행을 가지고 있다.")
     @ParameterizedTest
     @CsvSource(value = {"0, 0", "5, 5", "9, 8"})
-    void 위치는_숫자를_가진다(int row, int column) {
+    void fieldOfPositionTest(int row, int column) {
         // given
 
         // when & then
         Assertions.assertThatNoException().isThrownBy(() -> new Position(row, column));
     }
 
+    @DisplayName("위치는 상대적 위치(RelativePosition)과 더할 수 있다.")
     @Test
-    void 위치는_더할_수_있다() {
+    void positionAddTest() {
         // given
         Position position = new Position(0, 0);
         RelativePosition addPosition = new RelativePosition(0, 1);

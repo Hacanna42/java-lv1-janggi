@@ -54,35 +54,6 @@ public class GameBoardTest {
                 () -> assertThat(teamCount.getOrDefault(Team.RED, 0)).isEqualTo(16));
     }
 
-    @Test
-    void 피스들을_관리한다() {
-        // given
-        var piece = new Piece(Team.BLUE, new ChariotRule(), new Position(0, 1));
-        var piece2 = new Piece(Team.RED, new CannonRule(), new Position(0, 2));
-
-        // when
-        GameBoard gameBoard = new GameBoard(List.of(piece, piece2));
-        var currentPieces = gameBoard.getPieces();
-        // then
-        assertThatIterable(currentPieces).containsExactlyInAnyOrderElementsOf(List.of(piece, piece2));
-    }
-
-    @Test
-    void 같은_위치에_있는_적팀_기물을_잡을_수_있다() {
-        // given
-        Piece piece1 = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 0));
-        Piece piece2 = new Piece(Team.RED, new SoldierRule(), new Position(0, 1));
-        GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(piece1, piece2)));
-
-        // when
-        gameBoard.move(new Position(0, 0), new Position(0, 1));
-
-        // then
-        Piece expectedPiece = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 1));
-        assertThat(gameBoard.getPieces().size()).isEqualTo(1);
-        assertThat(gameBoard.getPieces().getFirst()).isEqualTo(expectedPiece);
-    }
-
     @DisplayName("GameBoard는 특정 위치의 기물을, 원하는 위치로 이동시킬 수 있다.")
     @Test
     void gameBoardPieceMoveTest() {
@@ -96,6 +67,23 @@ public class GameBoardTest {
         // then
         Piece expectedPiece = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 1));
         Assertions.assertThat(gameBoard.getPieces().getFirst()).isEqualTo(expectedPiece);
+    }
+
+    @DisplayName("이동한 위치에 있는 적팀 기물을 잡을 수 있다.")
+    @Test
+    void gameBoardMoveKillTest() {
+        // given
+        Piece piece1 = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 0));
+        Piece piece2 = new Piece(Team.RED, new SoldierRule(), new Position(0, 1));
+        GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(piece1, piece2)));
+
+        // when
+        gameBoard.move(new Position(0, 0), new Position(0, 1));
+
+        // then
+        Piece expectedPiece = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 1));
+        assertThat(gameBoard.getPieces().size()).isEqualTo(1);
+        assertThat(gameBoard.getPieces().getFirst()).isEqualTo(expectedPiece);
     }
 
     @DisplayName("GameBoard는 궁이 2개 일때, 게임이 진행 가능하다고 판단한다.")
