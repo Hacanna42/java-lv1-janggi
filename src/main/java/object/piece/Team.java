@@ -13,7 +13,7 @@ public enum Team {
 
     private final String name;
 
-    public static Team from(String text) {
+    public static Team parseFrom(String text) {
         return Arrays.stream(Team.values())
                 .filter(team -> text.equals(team.name))
                 .findFirst()

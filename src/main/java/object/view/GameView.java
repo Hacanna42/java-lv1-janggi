@@ -11,9 +11,9 @@ import object.piece.Piece;
 import object.piece.Team;
 
 public class GameView {
-    public static final String blue = "\u001B[34m";
-    public static final String red = "\u001B[31m";
-    public static final String exit = "\u001B[0m";
+    public static final String BLUE = "\u001B[34m";
+    public static final String RED = "\u001B[31m";
+    public static final String EXIT = "\u001B[0m";
 
     private final Scanner scanner;
 
@@ -60,7 +60,7 @@ public class GameView {
                 if (piece != null) {
                     printColorByTeam(piece);
                     System.out.printf("%-3s", piece.getPieceType().getName());
-                    System.out.print(exit);
+                    System.out.print(EXIT);
                     continue;
                 }
                 System.out.printf("%-3s", "。");
@@ -78,7 +78,7 @@ public class GameView {
     }
 
     private void printColorByTeam(Piece piece) {
-        String color = piece.getTeam() == Team.RED ? red : blue;
+        String color = piece.getTeam() == Team.RED ? RED : BLUE;
         System.out.print(color);
     }
 

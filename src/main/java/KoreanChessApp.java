@@ -12,7 +12,7 @@ public class KoreanChessApp {
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());
             }
-        } while (gameBoard.continuable());
+        } while (gameBoard.isContinuable());
 
         gameView.printWinTeam(gameBoard);
     }

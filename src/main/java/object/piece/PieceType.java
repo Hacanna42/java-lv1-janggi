@@ -22,7 +22,7 @@ public enum PieceType {
         return name;
     }
 
-    public static PieceType from(String text) {
+    public static PieceType parseFrom(String text) {
         return Arrays.stream(PieceType.values())
                 .filter(pieceType -> text.equals(pieceType.name))
                 .findFirst()

@@ -54,7 +54,7 @@ public class GameBoardTest {
                 () -> assertThat(teamCount.getOrDefault(Team.RED, 0)).isEqualTo(16));
     }
 
-
+    @Test
     void 피스들을_관리한다() {
         // given
         var piece = new Piece(Team.BLUE, new ChariotRule(), new Position(0, 1));
@@ -100,7 +100,7 @@ public class GameBoardTest {
 
     @DisplayName("GameBoard는 궁이 2개 일때, 게임이 진행 가능하다고 판단한다.")
     @Test
-    void gameBoardContinuableTest() {
+    void gameBoardIsContinuableTest() {
         // given
         GameBoard gameBoard = new GameBoard(List.of(
                 new Piece(Team.BLUE, new GeneralRule(), null),
@@ -108,7 +108,7 @@ public class GameBoardTest {
         ));
 
         // when
-        boolean expected = gameBoard.continuable();
+        boolean expected = gameBoard.isContinuable();
 
         // then
         Assertions.assertThat(expected).isTrue();
@@ -116,7 +116,7 @@ public class GameBoardTest {
 
     @DisplayName("GameBoard는 궁이 2개가 아닐때, 게임이 진행 불가능하다고 판단한다.")
     @Test
-    void gameBoardNotContinuableTest() {
+    void gameBoardNotIsContinuableTest() {
         // given
         GameBoard gameBoard = new GameBoard(List.of(
                 new Piece(Team.BLUE, new GeneralRule(), null),
@@ -124,7 +124,7 @@ public class GameBoardTest {
         ));
 
         // when
-        boolean expected = gameBoard.continuable();
+        boolean expected = gameBoard.isContinuable();
 
         // then
         Assertions.assertThat(expected).isFalse();

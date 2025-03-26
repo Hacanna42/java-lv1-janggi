@@ -97,14 +97,14 @@ public class GameBoard {
         swapTurn();
     }
 
-    public boolean continuable() {
+    public boolean isContinuable() {
         return 2 == pieces.stream()
                 .filter(piece -> piece.isSameType(PieceType.GENERAL))
                 .count();
     }
 
     public Team getWinTeam() {
-        if (continuable()) {
+        if (isContinuable()) {
             throw new IllegalArgumentException("게임이 종료되지 않아서 승자를 결정할 수 없습니다.");
         }
 
