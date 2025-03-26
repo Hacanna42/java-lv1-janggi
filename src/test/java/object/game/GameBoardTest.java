@@ -1,10 +1,9 @@
-package object.piece;
+package object.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import object.game.GameBoard;
 import object.coordinate.Position;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
@@ -12,6 +11,9 @@ import object.moverule.CannonRule;
 import object.moverule.ChariotRule;
 import object.moverule.GeneralRule;
 import object.moverule.SoldierRule;
+import object.piece.Piece;
+import object.piece.PieceType;
+import object.piece.Team;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -68,60 +70,17 @@ public class GameBoardTest {
     @Test
     void 같은_위치에_있는_적팀_기물을_잡을_수_있다() {
         // given
-        var piece1 = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 1));
-        var piece2 = new Piece(Team.RED, new SoldierRule(), new Position(0, 1));
+        Piece piece1 = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 0));
+        Piece piece2 = new Piece(Team.RED, new SoldierRule(), new Position(0, 1));
         GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(piece1, piece2)));
 
         // when
-        gameBoard.killPieceBy(piece1);
+        gameBoard.move(new Position(0, 0), new Position(0, 1));
 
         // then
+        Piece expectedPiece = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 1));
         assertThat(gameBoard.getPieces().size()).isEqualTo(1);
-        assertThat(gameBoard.getFirstPiece()).isEqualTo(piece1);
-    }
-
-    @Test
-    void 같은_위치에_있는_아군은_잡지_않는다() {
-        // given
-        var piece1 = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 1));
-        var piece2 = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 1));
-
-        GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(piece1, piece2)));
-
-        // when
-        gameBoard.killPieceBy(piece1);
-
-        // then
-        assertThat(gameBoard.getPieces().size()).isEqualTo(2);
-    }
-
-    @Test
-    void 다른_위치의_적군은_잡을_수_없다() {
-        var piece1 = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 2));
-        var piece2 = new Piece(Team.RED, new SoldierRule(), new Position(0, 1));
-
-        GameBoard gameBoard = new GameBoard(new ArrayList<>(List.of(piece1, piece2)));
-
-        // when
-        gameBoard.killPieceBy(piece1);
-
-        // then
-        assertThat(gameBoard.getPieces().size()).isEqualTo(2);
-    }
-
-    @DisplayName("특정 좌표의 Piece를 가져올 수 있다.")
-    @Test
-    void getPieceFromTest() {
-        // given
-        Position position = new Position(0, 0);
-        Piece fakePiece = new Piece(Team.BLUE, new SoldierRule(), position);
-        GameBoard gameBoard = new GameBoard(List.of(fakePiece));
-
-        // when
-        Piece piece = gameBoard.getPieceFrom(position);
-
-        // then
-        Assertions.assertThat(piece).isEqualTo(fakePiece);
+        assertThat(gameBoard.getPieces().getFirst()).isEqualTo(expectedPiece);
     }
 
     @DisplayName("GameBoard는 특정 위치의 기물을, 원하는 위치로 이동시킬 수 있다.")
@@ -135,8 +94,8 @@ public class GameBoardTest {
         gameBoard.move(new Position(0, 0), new Position(0, 1));
 
         // then
-        Piece movedPiece = gameBoard.getPieceFrom(new Position(0, 1));
-        Assertions.assertThat(movedPiece.getPieceType()).isEqualTo(PieceType.SOLDIER);
+        Piece expectedPiece = new Piece(Team.BLUE, new SoldierRule(), new Position(0, 1));
+        Assertions.assertThat(gameBoard.getPieces().getFirst()).isEqualTo(expectedPiece);
     }
 
     @DisplayName("GameBoard는 궁이 2개 일때, 게임이 진행 가능하다고 판단한다.")

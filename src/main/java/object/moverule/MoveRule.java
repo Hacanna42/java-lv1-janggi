@@ -41,4 +41,13 @@ public abstract class MoveRule {
     protected abstract Path getLegalRoute(Position startPosition, Position endPosition, Team team);
     protected abstract boolean isAbleToThrough(Path legalPath, List<Piece> piecesOnBoard, Team team);
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj != null && this.getClass() == obj.getClass();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getClass().hashCode();
+    }
 }

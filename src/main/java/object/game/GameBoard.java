@@ -97,29 +97,10 @@ public class GameBoard {
         swapTurn();
     }
 
-    public void killPieceBy(Piece killerPiece) {
-        Optional<Piece> willKilledPiece = pieces.stream()
-                .filter(piece -> piece.isSamePosition(killerPiece) && !piece.isSameTeam(killerPiece))
-                .findFirst();
-
-        willKilledPiece.ifPresent(pieces::remove);
-    }
-
     public boolean continuable() {
         return 2 == pieces.stream()
                 .filter(piece -> piece.isSameType(PieceType.GENERAL))
                 .count();
-    }
-
-    private void swapTurn() {
-        currentTurn = currentTurn == Team.BLUE ? Team.RED : Team.BLUE;
-    }
-
-    public Piece getPieceFrom(Position position) {
-        return pieces.stream()
-                .filter(piece -> piece.isSamePosition(position))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("해당 위치에 기물이 없습니다."));
     }
 
     public Team getWinTeam() {
@@ -139,11 +120,26 @@ public class GameBoard {
         return currentTurn;
     }
 
-    public Piece getFirstPiece() {
-        return pieces.getFirst();
-    }
-
     public List<Piece> getPieces() {
         return Collections.unmodifiableList(pieces);
+    }
+
+    private void killPieceBy(Piece killerPiece) {
+        Optional<Piece> willKilledPiece = pieces.stream()
+                .filter(piece -> piece.isSamePosition(killerPiece) && !piece.isSameTeam(killerPiece))
+                .findFirst();
+
+        willKilledPiece.ifPresent(pieces::remove);
+    }
+
+    private void swapTurn() {
+        currentTurn = currentTurn == Team.BLUE ? Team.RED : Team.BLUE;
+    }
+
+    private Piece getPieceFrom(Position position) {
+        return pieces.stream()
+                .filter(piece -> piece.isSamePosition(position))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 위치에 기물이 없습니다."));
     }
 }

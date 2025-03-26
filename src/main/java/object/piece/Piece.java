@@ -64,11 +64,11 @@ public class Piece {
         }
         Piece piece = (Piece) o;
         return getTeam() == piece.getTeam() && Objects.equals(moveRule, piece.moveRule)
-                && Objects.equals(position, piece.position);
+                && Objects.equals(getPosition(), piece.getPosition());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTeam(), moveRule, position);
+        return Objects.hash(getTeam(), moveRule, getPosition());
     }
 }
