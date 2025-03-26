@@ -21,11 +21,4 @@ public enum PieceType {
     public String getName() {
         return name;
     }
-
-    public static PieceType parseFrom(String text) {
-        return Arrays.stream(PieceType.values())
-                .filter(pieceType -> text.equals(pieceType.name))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기물 타입입니다."));
-    }
 }

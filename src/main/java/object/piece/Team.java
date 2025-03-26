@@ -13,13 +13,6 @@ public enum Team {
 
     private final String name;
 
-    public static Team parseFrom(String text) {
-        return Arrays.stream(Team.values())
-                .filter(team -> text.equals(team.name))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("팀은 홍 혹은 청이어야 합니다."));
-    }
-
     public String getName() {
         return name;
     }
