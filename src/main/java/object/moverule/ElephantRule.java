@@ -26,7 +26,7 @@ public class ElephantRule extends MoveRule {
     public Path getLegalRoute(Position from, Position to, Team team) {
         for (RelativePath relativePath : ablePaths) {
             try {
-                if (from.add(relativePath).equals(to)) {
+                if (from.apply(relativePath).equals(to)) {
                     return relativePath.makeAbsolutePath(from);
                 }
             } catch (IllegalStateException exception) {
@@ -48,11 +48,7 @@ public class ElephantRule extends MoveRule {
         if (pieceOnDestination.isEmpty()) {
             return true;
         }
-        if (!pieceOnDestination.get().isSameTeam(team)) {
-            return true;
-        }
-
-        return false;
+        return !pieceOnDestination.get().isSameTeam(team);
     }
 
     public PieceType getPieceType() {

@@ -48,18 +48,18 @@ public class Position {
         return (this.row + this.column) - (position.row + position.column) > 0;
     }
 
-    public Position add(RelativePosition relativePosition) {
+    public Position apply(RelativePosition relativePosition) {
         int newRow = this.row + relativePosition.getRow();
         int newColumn = this.column + relativePosition.getColumn();
 
         return new Position(newRow, newColumn);
     }
 
-    public Position add(RelativePath relativePath) {
+    public Position apply(RelativePath relativePath) {
         Position resultPosition = this;
         List<RelativePosition> positions = relativePath.getRelativePositions();
         for (RelativePosition position : positions) {
-            resultPosition = resultPosition.add(position);
+            resultPosition = resultPosition.apply(position);
         }
 
         return resultPosition;

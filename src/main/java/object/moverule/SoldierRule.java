@@ -34,7 +34,7 @@ public class SoldierRule extends MoveRule {
     public Path getLegalRoute(Position from, Position to, Team team) {
         for (RelativePath relativePath : pathsByTeam.get(team)) {
             try {
-                if (from.add(relativePath).equals(to)) {
+                if (from.apply(relativePath).equals(to)) {
                     return relativePath.makeAbsolutePath(from);
                 }
             } catch (IllegalStateException exception) {

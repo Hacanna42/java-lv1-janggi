@@ -27,7 +27,7 @@ public class HorseRule extends MoveRule {
     public Path getLegalRoute(Position from, Position to, Team team) {
         for (RelativePath relativePath : ablePaths) {
             try {
-                if (from.add(relativePath).equals(to)) {
+                if (from.apply(relativePath).equals(to)) {
                     return relativePath.makeAbsolutePath(from);
                 }
             } catch (IllegalStateException exception) {

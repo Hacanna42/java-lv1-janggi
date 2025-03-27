@@ -14,20 +14,11 @@ public class CannonRule extends MoveRule {
 
     @Override
     public Path getLegalRoute(Position startPosition, Position endPosition, Team team) {
-        Position maxPosition = Position.getAbsoluteBigPositionBetween(startPosition, endPosition);
-
-        if (startPosition.isSameColumn(endPosition)) {
-            if (maxPosition.equals(startPosition)) {
-                return generateStraightRoute(startPosition, endPosition, new RelativePosition(-1, 0));
-            }
-            return generateStraightRoute(startPosition, endPosition, new RelativePosition(1, 0));
-        }
-
         if (startPosition.isSameRow(endPosition)) {
-            if (maxPosition.equals(startPosition)) {
-                return generateStraightRoute(startPosition, endPosition, new RelativePosition(0, -1));
-            }
-            return generateStraightRoute(startPosition, endPosition, new RelativePosition(0, 1));
+            return getPathInSameRow(startPosition, endPosition);
+        }
+        if (startPosition.isSameColumn(endPosition)) {
+            return getPathInSameColumn(startPosition, endPosition);
         }
 
         throw new IllegalArgumentException(MoveRule.INVALID_POSITION);
@@ -51,7 +42,6 @@ public class CannonRule extends MoveRule {
             return false;
         }
 
-        // 목적지에 기물이 있다면
         Optional<Piece> pieceOnDestination = piecesOnBoard.stream()
                 .filter(piece -> piece.isSamePosition(destination))
                 .findFirst();
@@ -67,17 +57,34 @@ public class CannonRule extends MoveRule {
         return true;
     }
 
+    @Override
     public PieceType getPieceType() {
         return PieceType.CANNON;
     }
 
+    private Path getPathInSameRow(Position startPosition, Position endPosition) {
+        Position maxPosition = Position.getAbsoluteBigPositionBetween(startPosition, endPosition);
+        if (maxPosition.equals(startPosition)) {
+            return generateStraightRoute(startPosition, endPosition, RelativePosition.left());
+        }
+        return generateStraightRoute(startPosition, endPosition, RelativePosition.right());
+    }
+
+    private Path getPathInSameColumn(Position startPosition, Position endPosition) {
+        Position maxPosition = Position.getAbsoluteBigPositionBetween(startPosition, endPosition);
+        if (maxPosition.equals(startPosition)) {
+            return generateStraightRoute(startPosition, endPosition, RelativePosition.up());
+        }
+        return generateStraightRoute(startPosition, endPosition, RelativePosition.down());
+    }
+
     private Path generateStraightRoute(Position minPosition, Position maxPosition, RelativePosition direction) {
-        List<Position> footPrints = new ArrayList<>();
+        List<Position> path = new ArrayList<>();
 
         while (!minPosition.equals(maxPosition)) {
-            minPosition = minPosition.add(direction);
-            footPrints.add(minPosition);
+            minPosition = minPosition.apply(direction);
+            path.add(minPosition);
         }
-        return new Path(footPrints);
+        return new Path(path);
     }
 }

@@ -43,7 +43,7 @@ public class GameView {
 
     private Position askCoordinateOfTargetPiece() {
         System.out.println("이동시키고 싶은 기물의 위치를 다음과 같이 입력해주세요: y좌표, x좌표");
-        String rawCoordinate = scanner.nextLine();
+         String rawCoordinate = scanner.nextLine();
 
         return Position.parseFrom(rawCoordinate);
     }

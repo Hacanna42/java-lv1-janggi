@@ -15,7 +15,7 @@ public class RelativePath {
         List<Position> footPrints = new ArrayList<>();
         Position currentPosition = standardPosition;
         for (RelativePosition relativePosition : relativePath) {
-            currentPosition = currentPosition.add(relativePosition);
+            currentPosition = currentPosition.apply(relativePosition);
             footPrints.add(currentPosition);
         }
 
