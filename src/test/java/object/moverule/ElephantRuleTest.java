@@ -31,6 +31,21 @@ class ElephantRuleTest {
         );
     }
 
+    @DisplayName("상은 이동 가능한 경로가 없는 경우 예외를 발생시킨다.")
+    @Test
+    void elephantCantMoveExceptionTest() {
+        // given
+        ElephantRule elephantRule = new ElephantRule();
+
+        // when
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() ->
+                elephantRule.getLegalRoute(
+                        new Position(0, 0),
+                        new Position(1, 1),
+                        Team.BLUE)
+        );
+    }
+
     @DisplayName("상은 도착지에 아군이 있으면 이동하지 못한다.")
     @Test
     void isAbleToThroughTest() {

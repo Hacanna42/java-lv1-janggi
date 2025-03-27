@@ -32,6 +32,40 @@ class SoldierRuleTest {
         );
     }
 
+    @DisplayName("졸은 이동 가능한 경로가 없는 경우 예외를 발생시킨다.")
+    @Test
+    void soldierCantMoveExceptionTest() {
+        // given
+        SoldierRule soldierRule = new SoldierRule();
+
+        // when
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() ->
+                soldierRule.getLegalRoute(
+                        new Position(0, 0),
+                        new Position(1, 1),
+                        Team.BLUE)
+        );
+    }
+
+    @DisplayName("졸은 처음으로 충돌한 기물이 목적지에 있지 않는 경우 이동할 수 없다.")
+    @Test
+    void soldierFirstCrashIsNotInDestTest() {
+        // given
+        SoldierRule soldierRule = new SoldierRule();
+        Path fakePath = new Path(List.of(
+                new Position(0, 0),
+                new Position(0, 1),
+                new Position(0, 2)
+        ));
+        Piece fakePiece = new Piece(Team.RED, new SoldierRule(), new Position(0, 1));
+
+        // when
+        boolean actual = soldierRule.isAbleToThrough(fakePath, List.of(fakePiece), Team.BLUE);
+
+        // then
+        Assertions.assertThat(actual).isFalse();
+    }
+
     @DisplayName("졸은 홍팀일 때, 위로 이동이 불가능한 대신 아래로 이동할 수 있다.")
     @ParameterizedTest
     @CsvSource(value = {"6, 5", "5, 4", "5, 6"})

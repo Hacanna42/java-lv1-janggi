@@ -29,13 +29,13 @@ class PositionTest {
 
     @DisplayName("위치는 상대적 위치(RelativePosition)과 더할 수 있다.")
     @Test
-    void positionAddTest() {
+    void positionApplyTest() {
         // given
         Position position = new Position(0, 0);
         RelativePosition addPosition = new RelativePosition(0, 1);
 
         // when
-        Position newPosition = position.add(addPosition);
+        Position newPosition = position.apply(addPosition);
 
         // then
         Assertions.assertThat(newPosition).isEqualTo(new Position(0, 1));
