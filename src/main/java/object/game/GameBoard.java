@@ -19,7 +19,7 @@ import object.piece.Team;
 
 public class GameBoard {
 
-    private static Map<PieceType, Integer> scoreByType;
+    private static final Map<PieceType, Integer> scoreByType;
 
     private final List<Piece> pieces;
     private Team currentTurn;
