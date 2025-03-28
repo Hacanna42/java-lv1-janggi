@@ -23,7 +23,7 @@ class ChariotRuleTest {
         Position to = new Position(toRow, toCol);
 
         // when
-        Path path = chariotRule.getLegalRoute(from, to, Team.BLUE);
+        Path path = chariotRule.getLegalPath(from, to, Team.BLUE);
 
         // then
         assertAll(
@@ -40,7 +40,7 @@ class ChariotRuleTest {
 
         // when & then
         Assertions.assertThatIllegalArgumentException().isThrownBy(
-                () -> chariotRule.getLegalRoute(
+                () -> chariotRule.getLegalPath(
                         new Position(0, 0),
                         new Position(1, 1),
                         Team.BLUE)

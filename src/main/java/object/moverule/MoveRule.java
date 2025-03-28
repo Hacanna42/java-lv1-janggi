@@ -15,7 +15,7 @@ public abstract class MoveRule {
     public abstract PieceType getPieceType();
 
     public final void checkAbleToMove(Position from, Position to, List<Piece> piecesOnBoard, Team team) {
-        Path legalPath = getLegalRoute(from, to, team);
+        Path legalPath = getLegalPath(from, to, team);
         if (legalPath.getSize() == 0) {
             throw new IllegalArgumentException("제자리로 이동할 수 없습니다.");
         }
@@ -38,7 +38,7 @@ public abstract class MoveRule {
         return Optional.empty();
     }
 
-    protected abstract Path getLegalRoute(Position startPosition, Position endPosition, Team team);
+    protected abstract Path getLegalPath(Position startPosition, Position endPosition, Team team);
     protected abstract boolean isAbleToThrough(Path legalPath, List<Piece> piecesOnBoard, Team team);
 
     @Override

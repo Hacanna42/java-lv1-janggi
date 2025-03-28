@@ -13,12 +13,12 @@ import object.piece.Team;
 public class CannonRule extends MoveRule {
 
     @Override
-    public Path getLegalRoute(Position startPosition, Position endPosition, Team team) {
-        if (startPosition.isSameRow(endPosition)) {
-            return getPathInSameRow(startPosition, endPosition);
+    public Path getLegalPath(Position fromPosition, Position toPosition, Team team) {
+        if (fromPosition.isSameRow(toPosition)) {
+            return getPathInSameRow(fromPosition, toPosition);
         }
-        if (startPosition.isSameColumn(endPosition)) {
-            return getPathInSameColumn(startPosition, endPosition);
+        if (fromPosition.isSameColumn(toPosition)) {
+            return getPathInSameColumn(fromPosition, toPosition);
         }
 
         throw new IllegalArgumentException(MoveRule.INVALID_POSITION);

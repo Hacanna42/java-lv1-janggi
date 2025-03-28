@@ -13,14 +13,14 @@ import object.piece.Team;
 public class ChariotRule extends MoveRule {
 
     @Override
-    public Path getLegalRoute(Position startPosition, Position endPosition, Team team) {
-        Position maxPosition = Position.getAbsoluteBigPositionBetween(startPosition, endPosition);
+    public Path getLegalPath(Position fromPosition, Position toPosition, Team team) {
+        Position maxPosition = Position.getAbsoluteBigPositionBetween(fromPosition, toPosition);
 
-        if (startPosition.isSameRow(endPosition)) {
-            return getPathInSameRow(startPosition, endPosition, maxPosition);
+        if (fromPosition.isSameRow(toPosition)) {
+            return getPathInSameRow(fromPosition, toPosition, maxPosition);
         }
-        if (startPosition.isSameColumn(endPosition)) {
-            return getPathInSameColumn(startPosition, endPosition, maxPosition);
+        if (fromPosition.isSameColumn(toPosition)) {
+            return getPathInSameColumn(fromPosition, toPosition, maxPosition);
         }
 
         throw new IllegalArgumentException(MoveRule.INVALID_POSITION);

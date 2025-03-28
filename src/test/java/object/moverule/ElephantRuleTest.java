@@ -23,7 +23,7 @@ class ElephantRuleTest {
         Position to = new Position(toRow, toColumn);
 
         // when
-        Path path = elephantRule.getLegalRoute(from, to, Team.BLUE);
+        Path path = elephantRule.getLegalPath(from, to, Team.BLUE);
 
         // then
         assertAll(
@@ -39,7 +39,7 @@ class ElephantRuleTest {
 
         // when
         Assertions.assertThatIllegalArgumentException().isThrownBy(() ->
-                elephantRule.getLegalRoute(
+                elephantRule.getLegalPath(
                         new Position(0, 0),
                         new Position(1, 1),
                         Team.BLUE)

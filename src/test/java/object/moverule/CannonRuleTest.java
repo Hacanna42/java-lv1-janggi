@@ -23,7 +23,7 @@ class CannonRuleTest {
         Position to = new Position(toRow, toCol);
 
         // when
-        Path path = cannonRule.getLegalRoute(from, to, Team.BLUE);
+        Path path = cannonRule.getLegalPath(from, to, Team.BLUE);
 
         // then
         assertAll(
@@ -39,7 +39,7 @@ class CannonRuleTest {
         CannonRule cannonRule = new CannonRule();
 
         // when & then
-        Assertions.assertThatIllegalArgumentException().isThrownBy(() ->cannonRule.getLegalRoute(new Position(0, 0), new Position(1, 1), Team.BLUE));
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() ->cannonRule.getLegalPath(new Position(0, 0), new Position(1, 1), Team.BLUE));
     }
 
     @DisplayName("포는 이동 경로에 무조건 하나의 기물이 있어야 이동 가능하다 (적군, 아군 상관 없음)")

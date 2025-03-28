@@ -23,7 +23,7 @@ class SoldierRuleTest {
         Position to = new Position(toRow, toColumn);
 
         // when
-        Path path = soldierRule.getLegalRoute(from, to, Team.BLUE);
+        Path path = soldierRule.getLegalPath(from, to, Team.BLUE);
 
         // then
         assertAll(
@@ -40,7 +40,7 @@ class SoldierRuleTest {
 
         // when
         Assertions.assertThatIllegalArgumentException().isThrownBy(() ->
-                soldierRule.getLegalRoute(
+                soldierRule.getLegalPath(
                         new Position(0, 0),
                         new Position(1, 1),
                         Team.BLUE)
@@ -76,7 +76,7 @@ class SoldierRuleTest {
         Position to = new Position(toRow, toColumn);
 
         // when
-        Path path = soldierRule.getLegalRoute(from, to, Team.RED);
+        Path path = soldierRule.getLegalPath(from, to, Team.RED);
 
         // then
         assertAll(

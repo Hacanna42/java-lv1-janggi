@@ -23,7 +23,7 @@ class HorseRuleTest {
         Position to = new Position(toRow, toColumn);
 
         // when
-        Path path = horseRule.getLegalRoute(from, to, Team.BLUE);
+        Path path = horseRule.getLegalPath(from, to, Team.BLUE);
 
         // then
         assertAll(
@@ -39,7 +39,7 @@ class HorseRuleTest {
 
         // when
         Assertions.assertThatIllegalArgumentException().isThrownBy(() ->
-                horseRule.getLegalRoute(
+                horseRule.getLegalPath(
                         new Position(0, 0),
                         new Position(1, 1),
                         Team.BLUE)

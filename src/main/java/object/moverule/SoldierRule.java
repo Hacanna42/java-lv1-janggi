@@ -31,11 +31,11 @@ public class SoldierRule extends MoveRule {
     }
 
     @Override
-    public Path getLegalRoute(Position from, Position to, Team team) {
+    public Path getLegalPath(Position fromPosition, Position toPosition, Team team) {
         for (RelativePath relativePath : pathsByTeam.get(team)) {
             try {
-                if (from.apply(relativePath).equals(to)) {
-                    return relativePath.makeAbsolutePath(from);
+                if (fromPosition.apply(relativePath).equals(toPosition)) {
+                    return relativePath.makeAbsolutePath(fromPosition);
                 }
             } catch (IllegalStateException exception) {
                 // 범위 밖의 경로 가지치기

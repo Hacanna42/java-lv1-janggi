@@ -4,6 +4,7 @@ import object.coordinate.palace.Nodes;
 import object.piece.Team;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -21,5 +22,17 @@ class NodesTest {
 
         // then
         Assertions.assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("특정 Node의 간선을 반환하는 정적 팩토리 메서드에서, 간선을 찾지 못하면 예외를 발생한다.")
+    @Test
+    void nodesNotFoundTest() {
+        // given
+        Position position = new Position(0, 0);
+
+        // when & then
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() ->
+                Nodes.generateConnectedNodesFrom(position, Team.BLUE)
+        );
     }
 }
