@@ -23,10 +23,15 @@ public class GameView {
 
     public void playTurn(GameBoard gameBoard) {
         printBoard(gameBoard);
+        printScore(gameBoard);
         printTurn(gameBoard);
         Position from = askCoordinateOfTargetPiece();
         Position to = askCoordinateOfArrivePlace();
         gameBoard.move(from, to);
+    }
+
+    private void printScore(GameBoard gameBoard) {
+        System.out.printf("점수: 청 %.1f  |  홍 %.1f%n", gameBoard.getScore(Team.BLUE), gameBoard.getScore(Team.RED));
     }
 
     public void printWinTeam(GameBoard gameBoard) {
@@ -73,7 +78,6 @@ public class GameView {
             System.out.printf("%-3s", toFullWidth(i));
         }
 
-        System.out.println();
         System.out.println();
     }
 

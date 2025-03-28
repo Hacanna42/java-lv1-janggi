@@ -3,6 +3,7 @@ package object.game;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import object.coordinate.Position;
 import object.moverule.CannonRule;
@@ -17,6 +18,8 @@ import object.piece.PieceType;
 import object.piece.Team;
 
 public class GameBoard {
+
+    private static Map<PieceType, Integer> scoreByType;
 
     private final List<Piece> pieces;
     private Team currentTurn;
@@ -116,12 +119,25 @@ public class GameBoard {
         return generalPieceOfWinner.getTeam();
     }
 
+    public double getScore(Team team) {
+        // 후수의 경우 1.5점을 받고 시작함
+        double initialScore = team.equals(Team.BLUE) ? 0 : 1.5;
+        return initialScore + sumScoreOfPieces(team);
+    }
+
     public Team getCurrentTurn() {
         return currentTurn;
     }
 
     public List<Piece> getPieces() {
         return Collections.unmodifiableList(pieces);
+    }
+
+    private double sumScoreOfPieces(Team team) {
+        return pieces.stream()
+                .filter(piece -> piece.isSameTeam(team))
+                .mapToDouble(piece -> scoreByType.getOrDefault(piece.getPieceType(), 0))
+                .sum();
     }
 
     private void killPieceBy(Piece killerPiece) {
@@ -141,5 +157,16 @@ public class GameBoard {
                 .filter(piece -> piece.isSamePosition(position))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("해당 위치에 기물이 없습니다."));
+    }
+
+    static {
+        scoreByType = Map.ofEntries(
+                Map.entry(PieceType.CHARIOT, 13),
+                Map.entry(PieceType.CANNON, 7),
+                Map.entry(PieceType.HORSE, 5),
+                Map.entry(PieceType.ELEPHANT, 3),
+                Map.entry(PieceType.GUARD, 3),
+                Map.entry(PieceType.SOLDIER, 2)
+        );
     }
 }

@@ -14,6 +14,7 @@ import object.moverule.SoldierRule;
 import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
+import org.assertj.core.api.Assert;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -162,5 +163,24 @@ public class GameBoardTest {
 
         // then
         Assertions.assertThat(beforeTeam).isNotEqualTo(gameBoard.getCurrentTurn());
+    }
+
+    @DisplayName("GameBoard는 특정 팀의 점수를 계산할 수 있다.")
+    @Test
+    void gameBoardGetScoreTest() {
+        // given
+        GameBoard gameBoard = new GameBoard(List.of(
+                new Piece(Team.BLUE, new SoldierRule(), null)
+        ));
+
+        // when
+        double blueScore = gameBoard.getScore(Team.BLUE);
+        double redScore = gameBoard.getScore(Team.RED);
+
+        // then
+        assertAll(
+                () -> Assertions.assertThat(blueScore).isEqualTo(2),
+                () -> Assertions.assertThat(redScore).isEqualTo(1.5)
+        );
     }
 }
