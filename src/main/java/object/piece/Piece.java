@@ -54,6 +54,14 @@ public class Piece {
         return position;
     }
 
+    public int getRow() {
+        return position.getRow();
+    }
+
+    public int getColumn() {
+        return position.getColumn();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

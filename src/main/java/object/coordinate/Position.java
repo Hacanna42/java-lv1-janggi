@@ -31,10 +31,13 @@ public class Position {
         if (parsedText.length != 2) {
             throw new IllegalArgumentException("올바른 좌표 입력이 아닙니다. (y, x) 형태로 입력해주세요.");
         }
-        int row = Integer.parseInt(parsedText[0].trim());
-        int column = Integer.parseInt(parsedText[1].trim());
-
-        return new Position(row, column);
+        try {
+            int row = Integer.parseInt(parsedText[0].trim());
+            int column = Integer.parseInt(parsedText[1].trim());
+            return new Position(row, column);
+        } catch (NumberFormatException exception) {
+            throw new IllegalArgumentException("올바른 좌표 입력이 아닙니다. (y, x) 형태로 입력해주세요.");
+        }
     }
 
     public static Position getAbsoluteBigPositionBetween(Position position, Position otherPosition) {
@@ -71,6 +74,14 @@ public class Position {
 
     public boolean isSameColumn(Position position) {
         return this.column == position.column;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
     }
 
     @Override

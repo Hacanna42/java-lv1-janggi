@@ -12,14 +12,14 @@ public class RelativePath {
     }
 
     public Path makeAbsolutePath(Position standardPosition) {
-        List<Position> footPrints = new ArrayList<>();
+        List<Position> path = new ArrayList<>();
         Position currentPosition = standardPosition;
         for (RelativePosition relativePosition : relativePath) {
             currentPosition = currentPosition.apply(relativePosition);
-            footPrints.add(currentPosition);
+            path.add(currentPosition);
         }
 
-        return new Path(footPrints);
+        return new Path(path);
     }
 
     public List<RelativePosition> getRelativePositions() {

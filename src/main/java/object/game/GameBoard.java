@@ -29,6 +29,11 @@ public class GameBoard {
         currentTurn = Team.BLUE;
     }
 
+    public GameBoard(List<Piece> pieces, Team currentTurn) {
+        this.pieces = pieces;
+        this.currentTurn = currentTurn;
+    }
+
     public static GameBoard generateToInitGameFormat() {
         List<Piece> initialPieces = new ArrayList<>(List.of(
                 // 졸·병 생성
