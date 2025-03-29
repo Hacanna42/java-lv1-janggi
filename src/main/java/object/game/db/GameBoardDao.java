@@ -5,14 +5,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import object.game.GameBoard;
 
 public class GameBoardDao {
     private static final String SERVER = "localhost:13306";
-    private static final String DATABASE = "jjangi";
+    private static final String DATABASE = "janggi";
     private static final String OPTION = "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
+
+    private static final String CONNECTION_ERROR_MESSAGE = "DB 작업 중 예기치 못한 오류가 발생했습니다.";
 
     public boolean isAbleToConnect() {
         var connect = getConnection();
@@ -48,7 +49,7 @@ public class GameBoardDao {
             if (resultSet.next()) {
                 return resultSet.getLong(1);
             }
-            throw new SQLException("PK 생성 실패. 프로그램을 재시작 해주세요.");
+            throw new SQLException(CONNECTION_ERROR_MESSAGE);
         } catch (SQLException exception) {
             throw new RuntimeException(exception);
         }
@@ -65,7 +66,7 @@ public class GameBoardDao {
 
             prepareStatement.execute();
         } catch (SQLException exception) {
-            System.out.println("DB 연결 중 예기치 못한 문제가 발생했습니다. 더 이상 진행 상황이 저장되지 않습니다.");
+            System.out.println(CONNECTION_ERROR_MESSAGE);
             exception.printStackTrace();
         }
     }
@@ -82,18 +83,18 @@ public class GameBoardDao {
                 return resultSet.getString("current_turn");
             }
         } catch (SQLException exception) {
-            System.out.println("DB 연결 문제로 인해 현재 차례를 가져올 수 없습니다.");
+            System.out.println(CONNECTION_ERROR_MESSAGE);
             exception.printStackTrace();
         }
 
-        throw new IllegalArgumentException("DB 연결 문제로 인해 현재 차례를 가져올 수 없습니다.");
+        throw new IllegalArgumentException(CONNECTION_ERROR_MESSAGE);
     }
 
     private Connection getConnection() {
         try {
             return DriverManager.getConnection("jdbc:mysql://" + SERVER + "/" + DATABASE + OPTION, USERNAME, PASSWORD);
         } catch (SQLException exception) {
-            System.out.println("DB에 연결할 수 없습니다.");
+            System.out.println(CONNECTION_ERROR_MESSAGE);
             exception.printStackTrace();
             return null;
         }

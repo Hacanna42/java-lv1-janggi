@@ -1,17 +1,17 @@
 import object.game.GameBoard;
-import object.game.GameManager;
+import object.game.GameBoardSyncManager;
 import object.view.GameView;
 
 public class KoreanChessApp {
     public static void main(String[] args) {
-        GameManager gameManager = new GameManager();
+        GameBoardSyncManager gameBoardSyncManager = new GameBoardSyncManager();
         GameView gameView = new GameView();
-        GameBoard gameBoard = gameManager.setGameBoard();
+        GameBoard gameBoard = gameBoardSyncManager.loadGameBoard();
 
         do {
             try {
                 gameView.playTurn(gameBoard);
-                gameManager.updateGameSync(gameBoard);
+                gameBoardSyncManager.updateGameSync(gameBoard);
             } catch (IllegalArgumentException exception) {
                 System.out.println(exception.getMessage());
             }

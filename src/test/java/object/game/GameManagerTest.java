@@ -13,7 +13,7 @@ class GameManagerTest {
 //    @Test
     void getActiveSessionIdTest() {
         // given
-        GameManager gameManager = new GameManager();
+        GameBoardSyncManager gameBoardSyncManager = new GameBoardSyncManager();
 
         // when
 //        int actualSessionId = gameSettingManager.getActiveGameSessionId();
@@ -26,7 +26,7 @@ class GameManagerTest {
 //    @Test
     void getActiveSessionIdTest2() {
         // given
-        GameManager gameManager = new GameManager();
+        GameBoardSyncManager gameBoardSyncManager = new GameBoardSyncManager();
 
         // when
 //        int actualSessionId = gameSettingManager.getActiveGameSessionId();
