@@ -94,8 +94,6 @@ public class GameBoardDao {
         try {
             return DriverManager.getConnection("jdbc:mysql://" + SERVER + "/" + DATABASE + OPTION, USERNAME, PASSWORD);
         } catch (SQLException exception) {
-            System.out.println(CONNECTION_ERROR_MESSAGE);
-            exception.printStackTrace();
             return null;
         }
     }
