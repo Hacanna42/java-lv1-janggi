@@ -53,7 +53,8 @@ public class GameBoardSyncManager {
 
     private GameBoard load(long gameSessionId) {
         System.out.printf("진행중인 게임이 발견되었습니다. %d번 슬롯의 게임을 재개합니다.%n", gameSessionId);
-        List<Piece> loadedPieces = PieceMapper.generateGameBoardFrom(gameSessionId);
+        List<PieceRecord> pieceRecords = pieceDao.readAll(gameSessionId);
+        List<Piece> loadedPieces = PieceMapper.generatePiecesFrom(pieceRecords);
         Team currentTurn = Team.from(gameBoardDao.readCurrentTurn(gameSessionId));
         return new GameBoard(loadedPieces, currentTurn);
     }

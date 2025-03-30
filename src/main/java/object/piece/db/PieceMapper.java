@@ -9,11 +9,9 @@ import object.piece.PieceType;
 import object.piece.Team;
 
 public class PieceMapper {
-    public static List<Piece> generateGameBoardFrom(long gameSessionId) {
+    public static List<Piece> generatePiecesFrom(List<PieceRecord> pieceRecords) {
         List<Piece> pieces = new ArrayList<>();
 
-        PieceDao pieceDao = new PieceDao();
-        List<PieceRecord> pieceRecords = pieceDao.readAll(gameSessionId);
         for (PieceRecord pieceRecord : pieceRecords) {
             Team team = Team.from(pieceRecord.team());
             MoveRule moveRule = PieceType.from(pieceRecord.type()).createMoveRule();
