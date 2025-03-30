@@ -92,7 +92,7 @@ public class PieceDao {
         }
     }
 
-    private Connection getConnection() {
+    protected Connection getConnection() {
         try {
             return DriverManager.getConnection("jdbc:mysql://" + SERVER + "/" + DATABASE + OPTION, USERNAME,
                     PASSWORD);

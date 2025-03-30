@@ -90,7 +90,7 @@ public class GameBoardDao {
         throw new IllegalArgumentException(CONNECTION_ERROR_MESSAGE);
     }
 
-    private Connection getConnection() {
+    protected Connection getConnection() {
         try {
             return DriverManager.getConnection("jdbc:mysql://" + SERVER + "/" + DATABASE + OPTION, USERNAME, PASSWORD);
         } catch (SQLException exception) {
