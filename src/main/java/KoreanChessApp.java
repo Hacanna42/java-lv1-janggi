@@ -1,3 +1,4 @@
+import object.db.DBConnector;
 import object.db.MySQLConnector;
 import object.game.GameBoard;
 import object.game.GameBoardSyncManager;
@@ -7,9 +8,9 @@ import object.view.GameView;
 
 public class KoreanChessApp {
     public static void main(String[] args) {
-        MySQLConnector mySQLConnector = new MySQLConnector();
-        GameBoardDao gameBoardDao = new GameBoardDao(mySQLConnector);
-        PieceDao pieceDao = new PieceDao(mySQLConnector);
+        DBConnector dbConnector = new MySQLConnector();
+        GameBoardDao gameBoardDao = new GameBoardDao(dbConnector);
+        PieceDao pieceDao = new PieceDao(dbConnector);
 
         GameBoardSyncManager gameBoardSyncManager = new GameBoardSyncManager(gameBoardDao, pieceDao);
         GameView gameView = new GameView();
