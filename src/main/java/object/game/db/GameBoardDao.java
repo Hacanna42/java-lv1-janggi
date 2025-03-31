@@ -1,19 +1,19 @@
 package object.game.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import object.db.DBConnector;
 
 public class GameBoardDao {
-    private static final String SERVER = "localhost:13306";
-    private static final String DATABASE = "janggi";
-    private static final String OPTION = "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
-
     private static final String CONNECTION_ERROR_MESSAGE = "DB 작업 중 예기치 못한 오류가 발생했습니다.";
+
+    private final DBConnector dbConnector;
+
+    public GameBoardDao(DBConnector dbConnector) {
+        this.dbConnector = dbConnector;
+    }
 
     public boolean isAbleToConnect() {
         var connect = getConnection();
@@ -24,9 +24,9 @@ public class GameBoardDao {
         final var query = "SELECT id FROM game_session WHERE status = ?";
 
         try (final var connection = getConnection();
-             final var prepareStatement = connection.prepareStatement(query)) {
-            prepareStatement.setString(1, "IN_PROGRESS");
-            ResultSet resultSet = prepareStatement.executeQuery();
+             final var preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, "IN_PROGRESS");
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt("id");
             }
@@ -40,12 +40,12 @@ public class GameBoardDao {
         final var query = "INSERT INTO game_session (current_turn, status) VALUES (?, ?)";
 
         try (final var connection = getConnection();
-             final var prepareStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            prepareStatement.setString(1, gameBoard.currentTurn());
-            prepareStatement.setString(2, gameBoard.status());
+             final var preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, gameBoard.currentTurn());
+            preparedStatement.setString(2, gameBoard.status());
 
-            prepareStatement.executeUpdate();
-            ResultSet resultSet = prepareStatement.getGeneratedKeys();
+            preparedStatement.executeUpdate();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 return resultSet.getLong(1);
             }
@@ -59,12 +59,12 @@ public class GameBoardDao {
         final var query = "UPDATE game_session SET current_turn = ?, status = ? WHERE id = ?";
 
         try (final var connection = getConnection();
-             final var prepareStatement = connection.prepareStatement(query)) {
-            prepareStatement.setString(1, gameBoard.currentTurn());
-            prepareStatement.setString(2, gameBoard.status());
-            prepareStatement.setLong(3, gameSessionId);
+             final var preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, gameBoard.currentTurn());
+            preparedStatement.setString(2, gameBoard.status());
+            preparedStatement.setLong(3, gameSessionId);
 
-            prepareStatement.execute();
+            preparedStatement.execute();
         } catch (SQLException exception) {
             System.out.println(CONNECTION_ERROR_MESSAGE);
             exception.printStackTrace();
@@ -75,9 +75,9 @@ public class GameBoardDao {
         final var query = "SELECT current_turn FROM game_session WHERE id = ?";
 
         try (final var connection = getConnection();
-             final var prepareStatement = connection.prepareStatement(query)) {
-            prepareStatement.setLong(1, gameSessionId);
-            ResultSet resultSet = prepareStatement.executeQuery();
+             final var preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, gameSessionId);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
                 return resultSet.getString("current_turn");
@@ -91,10 +91,6 @@ public class GameBoardDao {
     }
 
     protected Connection getConnection() {
-        try {
-            return DriverManager.getConnection("jdbc:mysql://" + SERVER + "/" + DATABASE + OPTION, USERNAME, PASSWORD);
-        } catch (SQLException exception) {
-            return null;
-        }
+        return dbConnector.getConnection();
     }
 }

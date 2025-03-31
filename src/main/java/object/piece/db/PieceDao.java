@@ -1,20 +1,20 @@
 package object.piece.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import object.db.DBConnector;
 
 public class PieceDao {
-    private static final String SERVER = "localhost:13306";
-    private static final String DATABASE = "janggi";
-    private static final String OPTION = "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
-
     private static final String CONNECTION_ERROR_MESSAGE = "DB 작업 중 예기치 못한 오류가 발생했습니다.";
+
+    private final DBConnector dbConnector;
+
+    public PieceDao(DBConnector dbConnector) {
+        this.dbConnector = dbConnector;
+    }
 
     public void updateAll(long gameSessionId, List<PieceRecord> pieces) {
         Connection connection = getConnection();
@@ -50,9 +50,9 @@ public class PieceDao {
         List<PieceRecord> pieces = new ArrayList<>();
 
         try (var connection = getConnection();
-             var prepareStatement = connection.prepareStatement(query)) {
-            prepareStatement.setLong(1, gameSessionId);
-            ResultSet resultSet = prepareStatement.executeQuery();
+             var preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setLong(1, gameSessionId);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 pieces.add(PieceRecord.from(resultSet));
@@ -93,12 +93,6 @@ public class PieceDao {
     }
 
     protected Connection getConnection() {
-        try {
-            return DriverManager.getConnection("jdbc:mysql://" + SERVER + "/" + DATABASE + OPTION, USERNAME,
-                    PASSWORD);
-        } catch (SQLException exception) {
-            System.out.println(CONNECTION_ERROR_MESSAGE);
-            return null;
-        }
+        return dbConnector.getConnection();
     }
 }

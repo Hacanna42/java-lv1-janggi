@@ -10,9 +10,14 @@ import object.piece.db.PieceDao;
 import object.piece.db.PieceRecord;
 
 public class GameBoardSyncManager {
-    private final GameBoardDao gameBoardDao = new GameBoardDao();
-    private final PieceDao pieceDao = new PieceDao();
+    private final GameBoardDao gameBoardDao;
+    private final PieceDao pieceDao;
     private long gameSessionId = -1;
+
+    public GameBoardSyncManager(GameBoardDao gameBoardDao, PieceDao pieceDao) {
+        this.gameBoardDao = gameBoardDao;
+        this.pieceDao = pieceDao;
+    }
 
     public GameBoard loadGameBoard() {
         if (gameBoardDao.isAbleToConnect()) {

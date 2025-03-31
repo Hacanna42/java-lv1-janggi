@@ -10,11 +10,11 @@ class GameBoardDaoTest {
      * ! 주의 !
      * FakeConnectionGameBoardDao 를 사용하여 테스트할 것
      */
-    private final FakeConnectionGameBoardDao dao = new FakeConnectionGameBoardDao();
+    private final TestConnectionGameBoardDao dao = new TestConnectionGameBoardDao();
 
     @BeforeEach
     void initializeTable() {
-        if (dao.getClass() != FakeConnectionGameBoardDao.class) {
+        if (dao.getClass() != TestConnectionGameBoardDao.class) {
             throw new RuntimeException("테스트 코드가 접근하는 DAO 클래스가 올바르지 않습니다. 프로덕션용 DAO를 사용하고 있지는 않은지 점검하세요.");
         }
 

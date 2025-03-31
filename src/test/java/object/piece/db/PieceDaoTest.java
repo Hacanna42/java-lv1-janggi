@@ -14,11 +14,11 @@ class PieceDaoTest {
      * ! 주의 !
      * FakeConnectionPieceDao 를 사용하여 테스트할 것
      */
-    private final FakeConnectionPieceDao dao = new FakeConnectionPieceDao();
+    private final TestConnectionPieceDao dao = new TestConnectionPieceDao();
 
     @BeforeEach
     void initializeTable() {
-        if (dao.getClass() != FakeConnectionPieceDao.class) {
+        if (dao.getClass() != TestConnectionPieceDao.class) {
             throw new RuntimeException("테스트 코드가 접근하는 DAO 클래스가 올바르지 않습니다. 프로덕션용 DAO를 사용하고 있지는 않은지 점검하세요.");
         }
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import object.coordinate.Position;
 import object.moverule.CannonRule;
@@ -162,6 +163,24 @@ public class GameBoard {
                 .filter(piece -> piece.isSamePosition(position))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("해당 위치에 기물이 없습니다."));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        GameBoard gameBoard = (GameBoard) o;
+        return Objects.equals(getPieces(), gameBoard.getPieces())
+                && getCurrentTurn() == gameBoard.getCurrentTurn();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPieces(), getCurrentTurn());
     }
 
     static {
