@@ -20,7 +20,7 @@ import object.piece.Team;
 
 public class GameBoard {
 
-    private static final Map<PieceType, Integer> scoreByType;
+    private static final Map<PieceType, Integer> SCORE_BY_TYPE;
 
     private final List<Piece> pieces;
     private Team currentTurn;
@@ -142,7 +142,7 @@ public class GameBoard {
     private double sumScoreOfPieces(Team team) {
         return pieces.stream()
                 .filter(piece -> piece.isSameTeam(team))
-                .mapToDouble(piece -> scoreByType.getOrDefault(piece.getPieceType(), 0))
+                .mapToDouble(piece -> SCORE_BY_TYPE.getOrDefault(piece.getPieceType(), 0))
                 .sum();
     }
 
@@ -184,7 +184,7 @@ public class GameBoard {
     }
 
     static {
-        scoreByType = Map.ofEntries(
+        SCORE_BY_TYPE = Map.ofEntries(
                 Map.entry(PieceType.CHARIOT, 13),
                 Map.entry(PieceType.CANNON, 7),
                 Map.entry(PieceType.HORSE, 5),

@@ -10,7 +10,7 @@ public class MySQLConnector implements DBConnector {
     private static final String OPTION = "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
-
+    
     @Override
     public Connection getConnection() {
         try {

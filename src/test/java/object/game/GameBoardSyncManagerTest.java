@@ -92,4 +92,16 @@ class GameBoardSyncManagerTest {
                 () -> Assertions.assertThat(changedTurn).isEqualTo("홍")
         );
     }
+
+    @DisplayName("DB 연결이 불가하지만, 게임 정보 업로드를 시도하면 예외가 발생한다.")
+    @Test
+    void updateGameSyncWhenNoConnection() {
+        // given
+        GameBoardSyncManager gameBoardSyncManager = new GameBoardSyncManager(new GameBoardDao(new EmptyConnector()), new PieceDao(new EmptyConnector()));
+
+        // when & then
+        Assertions.assertThatIllegalStateException().isThrownBy(() ->
+                gameBoardSyncManager.updateGameSync(new GameBoard(List.of()))
+        );
+    }
 }

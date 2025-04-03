@@ -14,7 +14,7 @@ class MoveRuleTest {
     @Test
     void moveToSamePlaceTest() {
         // given
-        MoveRule moveRule = new SoldierRule();
+        MoveRule moveRule = new ChariotRule();
 
         // when & then
         Assertions.assertThatIllegalArgumentException().isThrownBy(() ->
