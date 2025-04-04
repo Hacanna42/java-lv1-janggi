@@ -50,14 +50,6 @@ public class Adjacency {
         return connectedNodes.contains(to);
     }
 
-    public boolean isOnStraightLine(Position from, Position to) {
-        if (!(adjacency.containsKey(from) && adjacency.containsKey(to))) {
-            return false;
-        }
-
-        return from.getRow() == to.getRow() || from.getColumn() == to.getColumn();
-    }
-
     public boolean isOnDiagonalLine(Position from, Position to) {
         if (!(adjacency.containsKey(from) && adjacency.containsKey(to))) {
             return false;

@@ -51,4 +51,17 @@ class AdjacencyTest {
         // then
         Assertions.assertThat(actual).isFalse();
     }
+
+    @DisplayName("두 위치가 간선 영역 내에서 같은 대각선 상인지 확인한다")
+    @Test
+    void isOnDiagonalLine() {
+        // given
+        Adjacency adjacency = Adjacency.generateOfPalaceArea();
+
+        // when
+        boolean actual = adjacency.isOnDiagonalLine(new Position(8, 4), new Position(9,5));
+
+        // then
+        Assertions.assertThat(actual).isTrue();
+    }
 }
