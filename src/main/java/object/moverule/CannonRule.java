@@ -6,6 +6,7 @@ import java.util.Optional;
 import object.coordinate.Position;
 import object.coordinate.Path;
 import object.coordinate.RelativePosition;
+import object.coordinate.palace.Adjacency;
 import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
@@ -19,6 +20,11 @@ public class CannonRule extends MoveRule {
         }
         if (fromPosition.isSameColumn(toPosition)) {
             return getPathInSameColumn(fromPosition, toPosition);
+        }
+
+        Adjacency palaceAdjacency = Adjacency.generateOfPalaceArea();
+        if (palaceAdjacency.isOnDiagonalLine(fromPosition, toPosition)) {
+            return getDiagonalPath(fromPosition, toPosition);
         }
 
         throw new IllegalArgumentException(MoveRule.INVALID_POSITION);
@@ -60,6 +66,14 @@ public class CannonRule extends MoveRule {
     @Override
     public PieceType getPieceType() {
         return PieceType.CANNON;
+    }
+
+    private Path getDiagonalPath(Position startPosition, Position endPosition) {
+        int midX = (startPosition.getColumn() + endPosition.getRow()) / 2;
+        int midY = (startPosition.getColumn() + endPosition.getRow()) / 2;
+        Position middle = new Position(midX, midY);
+
+        return new Path(List.of(middle, endPosition));
     }
 
     private Path getPathInSameRow(Position startPosition, Position endPosition) {

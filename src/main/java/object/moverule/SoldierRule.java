@@ -44,8 +44,8 @@ public class SoldierRule extends MoveRule {
             }
         }
 
-        Adjacency adjacency = Adjacency.generateOfPalaceArea();
-        if (adjacency.isConnected(fromPosition, toPosition)) {
+        Adjacency palaceAdjacency = Adjacency.generateOfPalaceArea();
+        if (palaceAdjacency.isConnected(fromPosition, toPosition)) {
             if (team == Team.BLUE && toPosition.getRow() > fromPosition.getRow()) {
                 return new Path(List.of(toPosition));
             }
