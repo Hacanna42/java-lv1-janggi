@@ -38,4 +38,17 @@ class AdjacencyTest {
         // then
         Assertions.assertThat(actual).isTrue();
     }
+
+    @DisplayName("궁성 영역에 대해, 도달할 수 없으면 false를 반환한다.")
+    @Test
+    void isConnected() {
+        // given
+        Adjacency adjacency = Adjacency.generateOfPalaceArea(Team.BLUE);
+
+        // when
+        boolean actual = adjacency.isConnected(new Position(0, 0), new Position(1, 1));
+
+        // then
+        Assertions.assertThat(actual).isFalse();
+    }
 }

@@ -28,6 +28,19 @@ public class Adjacency {
         return new Adjacency(adjacency);
     }
 
+    public static Adjacency generateOfPalaceArea() {
+        Map<Position, Nodes> adjacency = new HashMap<>();
+
+        for (Position position : redPositionsOfPalaceArea) {
+            adjacency.put(position, Nodes.generateConnectedNodesFrom(position, Team.RED));
+        }
+        for (Position position : bluePositionsOfPalaceArea) {
+            adjacency.put(position, Nodes.generateConnectedNodesFrom(position, Team.BLUE));
+        }
+
+        return new Adjacency(adjacency);
+    }
+
     public boolean isConnected(Position from, Position to) {
         if (!adjacency.containsKey(from)) {
             return false;
@@ -35,6 +48,22 @@ public class Adjacency {
 
         Nodes connectedNodes = adjacency.get(from);
         return connectedNodes.contains(to);
+    }
+
+    public boolean isOnStraightLine(Position from, Position to) {
+        if (!(adjacency.containsKey(from) && adjacency.containsKey(to))) {
+            return false;
+        }
+
+        return from.getRow() == to.getRow() || from.getColumn() == to.getColumn();
+    }
+
+    public boolean isOnDiagonalLine(Position from, Position to) {
+        if (!(adjacency.containsKey(from) && adjacency.containsKey(to))) {
+            return false;
+        }
+
+        return from.getColumn() - to.getColumn() == from.getRow() - to.getRow();
     }
 
     static {

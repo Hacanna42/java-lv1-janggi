@@ -7,6 +7,7 @@ import object.coordinate.Position;
 import object.coordinate.Path;
 import object.coordinate.RelativePosition;
 import object.coordinate.RelativePath;
+import object.coordinate.palace.Adjacency;
 import object.piece.Piece;
 import object.piece.PieceType;
 import object.piece.Team;
@@ -40,6 +41,16 @@ public class SoldierRule extends MoveRule {
             } catch (IllegalStateException exception) {
                 // 범위 밖의 경로 가지치기
                 continue;
+            }
+        }
+
+        Adjacency adjacency = Adjacency.generateOfPalaceArea();
+        if (adjacency.isConnected(fromPosition, toPosition)) {
+            if (team == Team.BLUE && toPosition.getRow() > fromPosition.getRow()) {
+                return new Path(List.of(toPosition));
+            }
+            if (team == Team.RED && toPosition.getRow() < fromPosition.getRow()) {
+                return new Path(List.of(toPosition));
             }
         }
 

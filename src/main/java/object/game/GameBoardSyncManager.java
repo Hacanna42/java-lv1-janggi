@@ -28,7 +28,7 @@ public class GameBoardSyncManager {
 
     public void updateGameSync(GameBoard gameBoard) {
         if (!gameBoardDao.isAbleToConnect()) {
-            throw new IllegalStateException("DB 연결이 불가하여 게임 정보를 업로드 할 수 없습니다.");
+            return;
         }
 
         gameBoardDao.update(gameSessionId, GameBoardRecord.from(gameBoard));
